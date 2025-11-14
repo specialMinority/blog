@@ -21,7 +21,7 @@ public class PostRepository {
     }
 
     /**
-     * ID로 단건 조회
+     * ID로 단건 조회 test
      */
     public Optional<Post> findById(Long id) {
         return Optional.ofNullable(store.get(id));
