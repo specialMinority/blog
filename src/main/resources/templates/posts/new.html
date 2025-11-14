@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>새 글 작성</title>
+  <style>
+    body{font-family:sans-serif;max-width:720px;margin:2rem auto}
+    label{display:block;margin:.6rem 0 .2rem;font-weight:bold}
+    input,textarea{width:100%;padding:.6rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;}
+    .row{margin-top:1rem;display:flex;gap:.5rem}
+    .btn{padding:.5rem 1rem;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#f6f6f6}
+    a{text-decoration:none;color:#0366d6}
+  </style>
+</head>
+<body>
+<h1>새 글 작성</h1>
+
+<!-- [요구사항 1] POST /posts 로 폼 데이터 전송 -->
+<form th:action="@{/posts}" method="post" th:object="${post}">
+  <label for="title">제목</label>
+  <input id="title" type="text" th:field="*{title}" required />
+
+  <label for="author">작성자</label>
+  <input id="author" type="text" th:field="*{author}" />
+
+  <label for="content">내용</label>
+  <textarea id="content" rows="8" th:field="*{content}"></textarea>
+
+  <div class="row">
+    <button class="btn" type="submit">등록</button>
+    <a class="btn" th:href="@{/posts}">목록으로</a>
+  </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시글 목록</title>
+  <style>
+    body{font-family:sans-serif;max-width:720px;margin:2rem auto}
+    a{color:#0366d6;text-decoration:none}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid #ddd;padding:.6rem;text-align:left}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+    .btn{padding:.4rem .8rem;border:1px solid #ccc;border-radius:6px;background:#f6f6f6}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>게시글 목록</h1>
+  <!-- GET /posts/new 로 이동 -->
+  <a class="btn" th:href="@{/posts/new}">새 글 작성</a>
+</div>
+
+<table>
+  <thead>
+  <tr><th>ID</th><th>제목</th><th>작성자</th></tr>
+  </thead>
+  <tbody>
+  <!-- [요구사항 3] 타임리프로 데이터 렌더링 -->
+  <tr th:each="p : ${posts}">
+    <td th:text="${p.id}">1</td>
+    <!-- GET /posts/{id} 로 이동 -->
+    <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">제목</a></td>
+    <td th:text="${p.author}">작성자</td>
+  </tr>
+  <tr th:if="${#lists.isEmpty(posts)}">
+    <td colspan="3">게시글이 없습니다.</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

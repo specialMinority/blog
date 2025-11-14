@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="${post.title}">게시글</title>
+  <style>
+    body{font-family:sans-serif;max-width:720px;margin:2rem auto}
+    .muted{color:#666;font-size:.9rem}
+    a{color:#0366d6;text-decoration:none}
+    pre{white-space:pre-wrap;background:#f6f6f6;padding:1rem;border-radius:6px;}
+  </style>
+</head>
+<body>
+<!-- GET /posts 로 이동 -->
+<a th:href="@{/posts}">&larr; 목록으로 돌아가기</a>
+
+<!-- [요구사항 3] 타임리프로 데이터 렌더링 -->
+<h1 th:text="${post.title}">제목</h1>
+<p class="muted">
+  <span>글번호 #</span><span th:text="${post.id}">1</span> ·
+  <span th:text="${post.author}">작성자</span>
+</p>
+<pre th:text="${post.content}">게시글 내용입니다.</pre>
+</body>
+</html>

@@ -1,0 +1,33 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.6' // 버전에 맞게 사용하세요
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17) // Java 17 사용
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// 1. 웹 애플리케이션 (MVC) 기능
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// 2. 타임리프 (템플릿 엔진) 기능
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// 테스트용
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
