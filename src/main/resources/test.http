@@ -1,0 +1,18 @@
+### 1. [POST] 새 글 등록 (데이터 전송)
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+  "title": "인텔리제이로 보낸 글",
+  "content": "HTTP Client 기능 테스트 중입니다.",
+  "author": "개발자"
+}
+
+### 2. [GET] 전체 목록 조회
+GET http://localhost:8080/api/posts
+
+### 3. [GET] 상세 조회 (ID는 상황에 맞춰 변경)
+GET http://localhost:8080/api/posts/1
+```
+
+3.  코드 왼쪽에 생기는 **초록색 재생 버튼(▶)**을 누르면 요청이 전송되고, 아래 콘솔창에 결과(JSON)가 바로 뜹니다.
