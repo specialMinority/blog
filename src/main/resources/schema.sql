@@ -17,3 +17,14 @@ CREATE TABLE IF NOT EXISTS comment (
     -- 외래 키 제약조건 (선택사항이지만 데이터 무결성을 위해 권장)
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
+
+-- 3. [추가]회원 테이블 (이름을 member로 설정)
+CREATE TABLE IF NOT EXISTS member (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    nickname VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- (참고) 나중에 Post와 Comment 테이블에도 member_id 컬럼을 추가해야 관계가 맺어짐
