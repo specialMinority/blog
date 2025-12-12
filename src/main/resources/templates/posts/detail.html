@@ -8,18 +8,66 @@
     .muted{color:#666;font-size:.9rem}
     a{color:#0366d6;text-decoration:none}
     pre{white-space:pre-wrap;background:#f6f6f6;padding:1rem;border-radius:6px;}
+
+    /* 댓글 영역 스타일 */
+    .comment-section { margin-top: 3rem; border-top: 1px solid #eee; padding-top: 1rem; }
+    .comment-form { display: flex; gap: 10px; margin-bottom: 2rem; }
+    .comment-input { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+    .comment-content { flex-grow: 1; }
+    .comment-btn { padding: 0.5rem 1rem; border: 1px solid #ccc; background: #f8f8f8; cursor: pointer; border-radius: 4px; }
+    .comment-list { list-style: none; padding: 0; }
+    .comment-item { padding: 0.8rem 0; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+    .delete-btn { color: #dc3545; font-size: 0.8rem; border: none; background: none; cursor: pointer; margin-left: 10px;}
   </style>
 </head>
 <body>
-<!-- GET /posts 로 이동 -->
+
+<!-- 1. 게시글 내용 (기존 코드) -->
 <a th:href="@{/posts}">&larr; 목록으로 돌아가기</a>
 
-<!-- [요구사항 3] 타임리프로 데이터 렌더링 -->
 <h1 th:text="${post.title}">제목</h1>
 <p class="muted">
   <span>글번호 #</span><span th:text="${post.id}">1</span> ·
   <span th:text="${post.author}">작성자</span>
 </p>
 <pre th:text="${post.content}">게시글 내용입니다.</pre>
+
+
+<!-- 2. 댓글 영역 (새로 추가됨) -->
+<div class="comment-section">
+  <h3>댓글</h3>
+
+  <!-- [댓글 작성 폼] -->
+  <!-- PostCommentController의 create 메서드(/posts/{postId}/comments)로 요청을 보냅니다 -->
+  <form class="comment-form" th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">
+    <input type="text" name="author" placeholder="작성자" class="comment-input" style="width: 15%;" required />
+    <input type="text" name="content" placeholder="댓글을 입력하세요..." class="comment-input comment-content" required />
+    <button type="submit" class="comment-btn">등록</button>
+  </form>
+
+  <!-- [댓글 목록] -->
+  <ul class="comment-list">
+    <!-- th:each로 서버에서 받은 comments 리스트를 반복 출력합니다 -->
+    <li class="comment-item" th:each="comment : ${comments}">
+      <div>
+        <strong th:text="${comment.author}">작성자</strong>:
+        <span th:text="${comment.content}">댓글 내용</span>
+      </div>
+
+      <!-- [댓글 삭제 버튼] -->
+      <form th:action="@{/comments/{id}/delete(id=${comment.id})}" method="post" style="display:inline;">
+        <!-- 삭제 후 다시 이 게시글로 돌아오기 위해 현재 글 번호(postId)를 숨겨서 같이 보냅니다 -->
+        <input type="hidden" name="postId" th:value="${post.id}" />
+        <button type="submit" class="delete-btn" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+      </form>
+    </li>
+
+    <!-- 댓글이 하나도 없을 때 보여줄 메시지 -->
+    <li th:if="${#lists.isEmpty(comments)}" style="color: #999; text-align: center; margin-top: 2rem;">
+      아직 작성된 댓글이 없습니다.
+    </li>
+  </ul>
+</div>
+
 </body>
 </html>

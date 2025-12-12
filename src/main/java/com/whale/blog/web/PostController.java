@@ -53,7 +53,9 @@
 
 package com.whale.blog.web;
 
+import com.whale.blog.domain.Comment;
 import com.whale.blog.domain.InmemmoryPost;
+import com.whale.blog.service.CommentService;
 import com.whale.blog.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,9 +68,11 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService; // 댓글 기능
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping
@@ -92,8 +96,14 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
+        // 1. 게시글 조회
         InmemmoryPost post = postService.get(id);
         model.addAttribute("post", post);
+
+        // 2. 게시글에 달린 댓글 목록 조회
+        List<Comment> comments = commentService.findAll(id);
+        model.addAttribute("comments", comments);
+
         return "posts/detail";
     }
 }
