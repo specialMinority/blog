@@ -12,11 +12,11 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/posts")
-public class ApiPostController {
+public class PostRestController {
 
     private final PostService postService;
 
-    public ApiPostController(PostService postService) {
+    public PostRestController(PostService postService) {
         this.postService = postService;
     }
 
