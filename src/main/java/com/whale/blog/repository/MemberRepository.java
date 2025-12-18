@@ -1,12 +1,16 @@
 package com.whale.blog.repository;
 
 import com.whale.blog.domain.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository {
 
-    // 로그인 아이디로 회원 찾기 (로그인, 중복검사)
+    Member save(Member member);
+
+    Optional<Member> findById(Long id);
+
     Optional<Member> findByLoginId(String loginId);
+
+    List<Member> findAll();
 }

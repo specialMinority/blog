@@ -1,3 +1,4 @@
+//todo 도메인 별로 repo, ctrl, service 파일 나누기
 package com.whale.blog.domain;
 
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     private String nickname;
 
     // DB의 created_at 컬럼과 매핑됩니다.
