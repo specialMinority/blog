@@ -1,6 +1,6 @@
-package com.whale.blog.web;
+package com.whale.blog.comment.controller;
 
-import com.whale.blog.service.CommentService;
+import com.whale.blog.comment.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

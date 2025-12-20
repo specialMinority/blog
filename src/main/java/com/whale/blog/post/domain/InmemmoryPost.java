@@ -1,4 +1,4 @@
-package com.whale.blog.domain;
+package com.whale.blog.post.domain;
 
 // 게시글 데이터를 담을 객체 (POJO)
 public class InmemmoryPost {

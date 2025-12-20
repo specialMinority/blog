@@ -1,6 +1,6 @@
-package com.whale.blog.repository;
+package com.whale.blog.post.repository;
 
-import com.whale.blog.domain.InmemmoryPost;
+import com.whale.blog.post.domain.InmemmoryPost;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

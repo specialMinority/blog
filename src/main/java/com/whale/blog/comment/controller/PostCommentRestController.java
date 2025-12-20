@@ -1,7 +1,7 @@
-package com.whale.blog.web;
+package com.whale.blog.comment.controller;
 
-import com.whale.blog.domain.Comment;
-import com.whale.blog.service.CommentService;
+import com.whale.blog.comment.domain.Comment;
+import com.whale.blog.comment.service.CommentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

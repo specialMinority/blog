@@ -1,7 +1,8 @@
-package com.whale.blog.service;
+package com.whale.blog.member.service;
 
-import com.whale.blog.domain.Member;
-import com.whale.blog.repository.MemberRepository;
+import com.whale.blog.member.domain.Member;
+import com.whale.blog.member.dto.MemberDto;
+import com.whale.blog.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,16 +19,18 @@ public class MemberService {
     }
 
     // 회원 가입
-    public Long join(Member member) {
+    public Long join(MemberDto memberDto) {
         // 중복 아이디 검증
-        validateDuplicateMember(member);
+        validateDuplicateMember(memberDto);
+
+        Member member = new Member(memberDto.getLoginId(), memberDto.getPassword(), memberDto.getNickname());
         memberRepository.save(member);
-        return member.getId();
+        return memberDto.getId();
     }
 
     // 중복 회원 검증 로직
-    private void validateDuplicateMember(Member member) {
-        memberRepository.findByLoginId(member.getLoginId()).ifPresent(m -> {
+    private void validateDuplicateMember(MemberDto memberDto) {
+        memberRepository.findByLoginId(memberDto.getLoginId()).ifPresent(m -> {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         });
     }

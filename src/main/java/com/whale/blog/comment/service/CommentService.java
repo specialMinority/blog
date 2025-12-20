@@ -1,7 +1,7 @@
-package com.whale.blog.service;
+package com.whale.blog.comment.service;
 
-import com.whale.blog.domain.Comment;
-import com.whale.blog.repository.CommentRepository;
+import com.whale.blog.comment.domain.Comment;
+import com.whale.blog.comment.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

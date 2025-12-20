@@ -1,6 +1,6 @@
-package com.whale.blog.repository;
+package com.whale.blog.comment.repository;
 
-import com.whale.blog.domain.Comment;
+import com.whale.blog.comment.domain.Comment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

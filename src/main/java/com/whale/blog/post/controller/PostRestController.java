@@ -1,8 +1,8 @@
-package com.whale.blog.web;
+package com.whale.blog.post.controller;
 
 // 1. [수정] Post 대신 InmemmoryPost를 임포트합니다.
-import com.whale.blog.domain.InmemmoryPost;
-import com.whale.blog.service.PostService;
+import com.whale.blog.post.domain.InmemmoryPost;
+import com.whale.blog.post.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

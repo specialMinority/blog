@@ -1,4 +1,4 @@
-package com.whale.blog.domain;
+package com.whale.blog.comment.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package com.whale.blog.repository;
+package com.whale.blog.comment.repository;
 
-import com.whale.blog.domain.Comment;
+import com.whale.blog.comment.domain.Comment;
 
 import java.util.List;
 import java.util.Optional;

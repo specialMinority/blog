@@ -1,6 +1,6 @@
-package com.whale.blog.repository;
+package com.whale.blog.comment.repository;
 
-import com.whale.blog.domain.Comment;
+import com.whale.blog.comment.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

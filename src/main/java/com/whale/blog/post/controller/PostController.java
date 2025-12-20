@@ -1,7 +1,7 @@
 //package com.whale.blog.web;
 //
-//import com.whale.blog.domain.InmemmoryPost;
-//import com.whale.blog.service.PostService;
+//import com.whale.blog.post.domain.InmemmoryPost;
+//import com.whale.blog.post.service.PostService;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
@@ -51,12 +51,12 @@
 
 //JPA
 
-package com.whale.blog.web;
+package com.whale.blog.post.controller;
 
-import com.whale.blog.domain.Comment;
-import com.whale.blog.domain.InmemmoryPost;
-import com.whale.blog.service.CommentService;
-import com.whale.blog.service.PostService;
+import com.whale.blog.comment.domain.Comment;
+import com.whale.blog.post.domain.InmemmoryPost;
+import com.whale.blog.comment.service.CommentService;
+import com.whale.blog.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

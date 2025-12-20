@@ -2,7 +2,7 @@
 
 //    package com.whale.blog.service;
 //
-//    import com.whale.blog.domain.InmemmoryPost;
+//    import com.whale.blog.post.domain.InmemmoryPost;
 //    import com.whale.blog.repository.JpaPostRepository;
 //    import org.springframework.stereotype.Service;
 //
@@ -36,11 +36,11 @@
 
 //sql
 
-package com.whale.blog.service;
+package com.whale.blog.post.service;
 
-import com.whale.blog.domain.InmemmoryPost;
+import com.whale.blog.post.domain.InmemmoryPost;
 // 1. [중요] SqlPostRepository를 임포트합니다.
-import com.whale.blog.repository.SqlPostRepository;
+import com.whale.blog.post.repository.SqlPostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

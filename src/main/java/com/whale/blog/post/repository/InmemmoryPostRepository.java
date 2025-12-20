@@ -1,6 +1,6 @@
 //package com.whale.blog.repository;
 //
-//import com.whale.blog.domain.InmemmoryPost;
+//import com.whale.blog.post.domain.InmemmoryPost;
 //import org.springframework.stereotype.Repository;
 //
 //import java.util.*;
