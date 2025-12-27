@@ -1,14 +1,14 @@
 package com.whale.blog.post.controller;
 
 // 1. [수정] Post 대신 InmemmoryPost를 임포트합니다.
-import com.whale.blog.post.domain.InmemmoryPost;
+import com.whale.blog.post.domain.Post;
 import com.whale.blog.post.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * [API 컨트롤러] - InmemmoryPost 사용 버전
+ * [API 컨트롤러] - Post 사용 버전
  */
 @RestController
 @RequestMapping("/api/posts")
@@ -22,30 +22,30 @@ public class PostRestController {
 
     /**
      * [GET] 전체 목록 조회
-     * 반환 타입: List<InmemmoryPost>
+     * 반환 타입: List<Post>
      */
     @GetMapping
-    public List<InmemmoryPost> list() {
-        // PostService.list()가 List<InmemmoryPost>를 반환하므로 그대로 리턴합니다.
+    public List<Post> list() {
+        // PostService.list()가 List<Post>를 반환하므로 그대로 리턴합니다.
         return postService.list();
     }
 
     /**
      * [GET] 상세 조회
-     * 반환 타입: InmemmoryPost
+     * 반환 타입: Post
      */
     @GetMapping("/{id}")
-    public InmemmoryPost detail(@PathVariable Long id) {
-        return postService.get(id);
+    public Post detail(@PathVariable Long id) {
+        return postService.findById(id);
     }
 
     /**
      * [POST] 새 글 등록
-     * 매개변수 및 반환 타입: InmemmoryPost
+     * 매개변수 및 반환 타입: Post
      */
     @PostMapping
-    public InmemmoryPost create(@RequestBody InmemmoryPost post) {
-        // @RequestBody를 통해 JSON 데이터를 InmemmoryPost 객체로 받습니다.
+    public Post create(@RequestBody Post post) {
+        // @RequestBody를 통해 JSON 데이터를 Post 객체로 받습니다.
         return postService.create(post);
     }
 }
