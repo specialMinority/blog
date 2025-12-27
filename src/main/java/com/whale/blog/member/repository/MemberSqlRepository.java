@@ -70,8 +70,7 @@ public class MemberSqlRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        String sql = "SELECT * FROM member";
-        return jdbcTemplate.query(sql, memberRowMapper());
+    public void delete(Member member) {
+        String sql = "DELETE FROM member WHERE id = ?";
     }
 }

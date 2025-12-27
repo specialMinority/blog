@@ -76,6 +76,11 @@ public class PostController {
     }
 
     @GetMapping
+    public String main() {
+        return "posts/main";
+    }
+
+    @GetMapping("/list")
     public String list(Model model) {
         List<InmemmoryPost> posts = postService.list();
         model.addAttribute("posts", posts);

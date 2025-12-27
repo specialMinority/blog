@@ -16,12 +16,9 @@ public class Member {
     @Column(name = "login_id", unique = true, nullable = false)
     private String loginId;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(length = 50, nullable = false)
     private String nickname;
-
     // DB의 created_at 컬럼과 매핑됩니다.
     @Column(name = "created_at")
     private LocalDateTime createdAt;

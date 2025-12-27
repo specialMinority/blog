@@ -30,7 +30,7 @@ public class MemberInMemoryRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        return new ArrayList<>(store.values());
+    public void delete(Member member) {
+        store.remove(member.getId());
     }
 }

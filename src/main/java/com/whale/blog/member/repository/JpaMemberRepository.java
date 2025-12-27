@@ -39,9 +39,7 @@ public class JpaMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        // 전체 조회 JPQL (테이블이 아닌 객체 m을 대상으로 쿼리를 날립니다)
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList();
+    public void delete(Member member) {
+        em.remove(member);
     }
 }

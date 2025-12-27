@@ -8,26 +8,38 @@
     a{color:#0366d6;text-decoration:none}
     table{width:100%;border-collapse:collapse}
     th,td{border-bottom:1px solid #ddd;padding:.6rem;text-align:left}
+
+    /* 상단바 스타일 수정 */
     .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-    .btn{padding:.4rem .8rem;border:1px solid #ccc;border-radius:6px;background:#f6f6f6}
+
+    /* 버튼 그룹 스타일 (버튼 사이 간격) */
+    .btn-group { display: flex; gap: 10px; }
+
+    .btn{padding:.4rem .8rem;border:1px solid #ccc;border-radius:6px;background:#f6f6f6; font-size: 14px;}
+
+    /* 회원가입 버튼은 눈에 띄게 파란색으로 포인트 주기 (선택사항) */
+    .btn-primary { background-color: #007bff; color: white; border: none; }
+    .btn-primary:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
+
 <div class="topbar">
   <h1>게시글 목록</h1>
-  <!-- GET /posts/new 로 이동 -->
-  <a class="btn" th:href="@{/posts/new}">새 글 작성</a>
-</div>
 
+  <div class="btn-group">
+    <a class="btn" th:href="@{/users/my}" style="background-color: #fff; border-color: #28a745; color: #28a745;">My Page</a>
+    <a class="btn btn-primary" th:href="@{/users/signup}">로그아웃</a>
+    <a class="btn" th:href="@{/posts/new}">새 글 작성</a>
+  </div>
+</div>
 <table>
   <thead>
   <tr><th>ID</th><th>제목</th><th>작성자</th></tr>
   </thead>
   <tbody>
-  <!-- [요구사항 3] 타임리프로 데이터 렌더링 -->
   <tr th:each="p : ${posts}">
     <td th:text="${p.id}">1</td>
-    <!-- GET /posts/{id} 로 이동 -->
     <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">제목</a></td>
     <td th:text="${p.author}">작성자</td>
   </tr>
