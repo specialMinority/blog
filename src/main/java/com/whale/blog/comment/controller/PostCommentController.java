@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+
 public class PostCommentController {
 
     private final CommentService commentService;
@@ -18,10 +19,10 @@ public class PostCommentController {
     // 댓글 등록
     // 역할: 댓글을 저장하고 다시 게시글 상세 페이지로 리다이렉트
     @PostMapping("/posts/{postId}/comments")
-    public String create(@PathVariable Long postId, @RequestParam String content, @RequestParam String author) {
+    public String create(@PathVariable Long postId, @RequestParam String content, @RequestParam String author, @RequestParam(required = false) Long parentId) {
 
         //1. 서비스에게 댓글 저장을 시킨다.
-        commentService.create(postId, content, author);
+        commentService.create(postId, content, author, parentId);
 
         //2. 저장이 끝나면 보던 게시글로 돌아간다.
         return "redirect:/posts/" + postId;

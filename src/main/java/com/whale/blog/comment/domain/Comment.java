@@ -1,9 +1,11 @@
 package com.whale.blog.comment.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //JPA가 관리하는 테이블임을 선언
 public class Comment {
@@ -16,12 +18,24 @@ public class Comment {
     private String content; // 댓글 내용
     private String author; // 댓글 작성자
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    // 부모 댓글
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Comment> children = new ArrayList<>();
+
     public Comment() {}
 
-    public Comment(Long postId, String content, String author) {
+    public Comment(Long postId, String content, String author, Comment parent) {
         this.postId = postId;
         this.content = content;
         this.author = author;
+        this.parent = parent;
     }
 
     public Long getId() {
@@ -47,5 +61,23 @@ public class Comment {
     }
     public void setAuthor(String author) {
         this.author = author;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public Comment getParent() {
+        return parent;
+    }
+    public void setParent(Comment parent) {
+        this.parent = parent;
+    }
+    public List<Comment> getChildren() {
+        return children;
+    }
+    public void setChildren(List<Comment> children) {
+        this.children = children;
     }
 }
