@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+    <style>
+        /* 간단한 스타일 */
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f6f9; }
+        .edit-container { background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+<div class="edit-container">
+    <h2 style="text-align: center;">정보 수정</h2>
+
+    <label>이름</label>
+    <input type="text" id="name" th:value="${member.nickname}" placeholder="변경할 이름">
+
+    <label>새 비밀번호</label>
+    <input type="password" id="password" placeholder="변경할 비밀번호 (선택)">
+
+    <button onclick="updateMember()">수정 완료</button>
+    <a href="/users/my" style="display:block; text-align:center; margin-top:15px; text-decoration:none; color:#666;">취소하고 돌아가기</a>
+</div>
+
+<script>
+    function updateMember() {
+        const data = {
+            nickname: document.getElementById("name").value,
+            password: document.getElementById("password").value
+        };
+
+        fetch('/users/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(async res => {
+            if (res.ok) {
+                alert("수정되었습니다.");
+                location.href = "/users/my";
+            } else {
+                alert("수정 실패: " + await res.text());
+            }
+        });
+    }
+</script>
+</body>
+</html>

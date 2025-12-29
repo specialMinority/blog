@@ -54,13 +54,15 @@
 package com.whale.blog.post.controller;
 
 import com.whale.blog.comment.domain.Comment;
-import com.whale.blog.post.domain.InmemmoryPost;
 import com.whale.blog.comment.service.CommentService;
+import com.whale.blog.heart.service.HeartService;
+import com.whale.blog.post.domain.Post;
 import com.whale.blog.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -69,38 +71,54 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService; // 댓글 기능
+    private final HeartService heartService; // 좋아요 기능
 
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService, CommentService commentService, HeartService heartService) {
         this.postService = postService;
         this.commentService = commentService;
+        this.heartService = heartService;
     }
 
     @GetMapping
+    public String main() {
+        return "posts/main";
+    }
+
+    @GetMapping("/list")
     public String list(Model model) {
-        List<InmemmoryPost> posts = postService.list();
+        List<Post> posts = postService.list();
         model.addAttribute("posts", posts);
         return "posts/list";
     }
 
     @GetMapping("/new")
     public String newForm(Model model) {
-        model.addAttribute("post", new InmemmoryPost());
+        model.addAttribute("post", new Post());
         return "posts/new";
     }
 
     @PostMapping
-    public String create(@ModelAttribute InmemmoryPost post) {
+    public String create(@ModelAttribute Post post) {
         postService.create(post);
-        return "redirect:/posts";
+        return "redirect:/posts/list";
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, Principal principal) {
         // 1. 게시글 조회
-        InmemmoryPost post = postService.get(id);
-        model.addAttribute("post", post);
+        Post post = postService.findById(id);
 
-        // 2. 게시글에 달린 댓글 목록 조회
+        // 2. 로그인 여부에 따라 좋아요 확인
+        boolean isLiked = false;
+        if(principal != null) {
+            // ★ 수정됨: toggle(변경)이 아니라 isLiked(확인) 메서드 호출!
+            isLiked = heartService.isLiked(principal.getName(), id);
+        }
+
+        model.addAttribute("post", post);
+        model.addAttribute("isLiked", isLiked);
+
+        // 3. 댓글 조회 등...
         List<Comment> comments = commentService.findAll(id);
         model.addAttribute("comments", comments);
 

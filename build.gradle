@@ -19,16 +19,18 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
-	// [변경] 기존 starter-jdbc 대신 starter-data-jpa를 사용합니다.
-	// JPA 라이브러리는 내부적으로 JDBC를 포함하고 있어, JdbcTemplate과 JPA 둘 다 사용 가능합니다.
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-	// MySQL DB 드라이버 (유지)
-	runtimeOnly 'com.mysql:mysql-connector-j'
-
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
