@@ -1,55 +1,111 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <title>게시글 목록</title>
-  <style>
-    body{font-family:sans-serif;max-width:720px;margin:2rem auto}
-    a{color:#0366d6;text-decoration:none}
-    table{width:100%;border-collapse:collapse}
-    th,td{border-bottom:1px solid #ddd;padding:.6rem;text-align:left}
+    <meta charset="UTF-8"/>
+    <title>게시글 목록</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 720px;
+            margin: 2rem auto
+        }
 
-    /* 가운데 정렬용 클래스 */
-    .text-center { text-align: center; }
+        a {
+            color: #0366d6;
+            text-decoration: none
+        }
 
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-    .btn-group { display: flex; gap: 10px; }
-    .btn{padding:.4rem .8rem;border:1px solid #ccc;border-radius:6px;background:#f6f6f6; font-size: 14px;}
-    .btn-primary { background-color: #007bff; color: white; border: none; }
-    .btn-primary:hover { background-color: #0056b3; }
-  </style>
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: .6rem;
+            text-align: left
+        }
+
+        /* 가운데 정렬용 클래스 */
+        .text-center {
+            text-align: center;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: .4rem .8rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: #f6f6f6;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
-<div class="topbar">
-  <h1>게시글 목록</h1>
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
+    <form th:action="@{/posts/search}" method="get" style="display: flex; gap: 5px;">
+        <input type="text" name="searchText" placeholder="제목을 입력하세요"
+               style="padding: .4rem; border-radius: 6px; border: 1px solid #ccc; width: 200px;">
+        <button type="submit" class="btn btn-primary">검색</button>
+    </form>
+</div>
 
-  <div class="btn-group">
-    <a class="btn" th:href="@{/users/my}" style="background-color: #fff; border-color: #28a745; color: #28a745;">My Page</a>
-    <a class="btn" th:href="@{/logout}">로그아웃</a>
-    <a class="btn btn-primary" th:href="@{/posts/new}">새 글 작성</a>
-  </div>
+<div class="topbar">
+    <h1>게시글 목록</h1>
+
+    <div class="btn-group">
+        <a class="btn"
+           th:href="@{/posts/list(sortDir=${currentSort == 'desc' ? 'asc' : 'desc'})}"
+           th:text="${currentSort == 'desc' ? '▼ 최신순' : '▲ 오래된순'}">
+        </a>
+        <a class="btn" th:href="@{/users/my}" style="background-color: #fff; border-color: #28a745; color: #28a745;">My
+            Page</a>
+        <a class="btn" th:href="@{/logout}">로그아웃</a>
+        <a class="btn btn-primary" th:href="@{/posts/new}">새 글 작성</a>
+    </div>
 </div>
 <table>
-  <thead>
-  <tr>
-    <th style="width: 10%">ID</th>
-    <th>제목</th>
-    <th style="width: 20%">작성자</th>
-    <th style="width: 15%" class="text-center">좋아요</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="p : ${posts}">
-    <td th:text="${p.id}">1</td>
-    <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">제목</a></td>
-    <td th:text="${p.author}">작성자</td>
-    <td class="text-center" th:text="${p.likeCount}">0</td>
-  </tr>
-  <tr th:if="${#lists.isEmpty(posts)}">
-    <td colspan="4" class="text-center">게시글이 없습니다.</td>
-  </tr>
-  </tbody>
+    <thead>
+    <tr>
+        <th style="width: 10%">ID</th>
+        <th>제목</th>
+        <th style="width: 20%">작성자</th>
+        <th style="width: 15%" class="text-center">좋아요</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${posts}">
+        <td th:text="${p.id}">1</td>
+        <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">제목</a></td>
+        <td th:text="${p.author}">작성자</td>
+        <td class="text-center" th:text="${p.likeCount}">0</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(posts)}">
+        <td colspan="4" class="text-center">게시글이 없습니다.</td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>

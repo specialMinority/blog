@@ -3,6 +3,7 @@ package com.whale.blog.heart.domain;
 import com.whale.blog.member.domain.Member;
 import com.whale.blog.post.domain.Post;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Heart {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

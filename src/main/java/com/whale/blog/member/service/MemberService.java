@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,12 +23,13 @@ public class MemberService {
     }
 
     // 회원 가입
-    public Long join(JoinDto joinDto) {
+    @Transactional
+    public void join(JoinDto joinDto) {
+        // todo join보다 좀 더 직관적인 signup으로
         // 중복 아이디 검증
         validateDuplicateMember(joinDto);
         Member member = new Member(joinDto.getLoginId(), passwordEncoder.encode(joinDto.getPassword()), joinDto.getNickname());
         memberRepository.save(member);
-        return member.getId();
     }
 
     // 중복 회원 검증 로직
@@ -40,6 +40,7 @@ public class MemberService {
     }
 
     // 회원 조회
+    @Transactional(readOnly = true)
     public Optional<Member> findByLoginId(String loginId) {
         return memberRepository.findByLoginId(loginId);
     }
@@ -55,8 +56,7 @@ public class MemberService {
 
         // 3. 비밀번호 변경
         if (updateDto.getPassword() != null && !updateDto.getPassword().isEmpty()) {
-            String encodedPwd = passwordEncoder.encode(updateDto.getPassword());
-            member.setPassword(encodedPwd);
+            member.setPassword(passwordEncoder.encode(updateDto.getPassword()));
         }
     }
 

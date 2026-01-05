@@ -22,6 +22,7 @@ public class HeartService {
     private final MemberRepository memberRepository;
     private final JpaPostRepository postRepository;
 
+    @Transactional
     public boolean toggleHeartByLoginId(String loginId, Long postId) {
         // 1. 로그인 아이디로 회원 조회
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("회원 정보가 없음"));
@@ -35,7 +36,8 @@ public class HeartService {
             heartRepository.delete(heartOpt.get());
             return false;
         } else {
-            heartRepository.save(new Heart(member, post));
+            Heart heart = new Heart(member, post);
+            heartRepository.save(heart);
             return true;
         }
     }
@@ -48,12 +50,5 @@ public class HeartService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않음"));
 
         return heartRepository.existsByMemberAndPost(member, post);
-    }
-
-    // 특정 게시글 좋아요 개수 조회
-    @Transactional(readOnly = true)
-    public int countHeart(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow();
-        return heartRepository.countByPost(post);
     }
 }
