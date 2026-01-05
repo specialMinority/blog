@@ -24,16 +24,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/posts", "/users/login", "/users/signup", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/posts/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 // 1. formLogin 설정
                 .formLogin(login -> login
-                        .loginPage("/users/login")    // ★주의: 위 requestMatchers에 적은 주소와 맞춰주세요!
+                        .loginPage("/users/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/posts", true)
                         .permitAll()
-                ) // <--- 여기서 formLogin 괄호를 닫아줘야 합니다!
+                )
 
                 // 2. exceptionHandling 설정 (formLogin 밖으로 빼냄)
                 .exceptionHandling(exception -> exception

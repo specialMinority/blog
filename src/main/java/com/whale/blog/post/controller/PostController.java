@@ -85,11 +85,14 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
-        List<Post> posts = postService.list();
+    public String list(@RequestParam(value = "sortDir", defaultValue = "desc") String sortDir, Model model) {
+        List<Post> posts = postService.getPosts(sortDir);
         model.addAttribute("posts", posts);
+        model.addAttribute("currentSort", sortDir);
         return "posts/list";
     }
+
+    //todo 1. 작성일자 Column을 추가하고 작성일자로 정렬하게 하자 2. 검색 결과 내에서도 정렬 가능하게 리팩토링 해보자
 
     @GetMapping("/new")
     public String newForm(Model model) {
@@ -111,7 +114,6 @@ public class PostController {
         // 2. 로그인 여부에 따라 좋아요 확인
         boolean isLiked = false;
         if(principal != null) {
-            // ★ 수정됨: toggle(변경)이 아니라 isLiked(확인) 메서드 호출!
             isLiked = heartService.isLiked(principal.getName(), id);
         }
 
@@ -124,4 +126,12 @@ public class PostController {
 
         return "posts/detail";
     }
+
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam("searchText") String searchText, Model model) {
+        List<Post> result = postService.findByTitleContains(searchText);
+        model.addAttribute("posts", result);
+        return "posts/list";
+    }
+    //todo 본문 내용이나 작성자로도 검색할 수 있게 리팩토링 해보자
 }

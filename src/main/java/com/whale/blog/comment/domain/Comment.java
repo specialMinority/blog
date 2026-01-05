@@ -1,5 +1,6 @@
 package com.whale.blog.comment.domain;
 
+import com.whale.blog.post.domain.Post;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,8 +15,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment
     private Long id;
 
-    private Long postId; // 어떤 게시글의 댓글인지(PK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post; // 어떤 게시글의 댓글인지
+    //todo Post - Comment 연관관계 매핑
+
     private String content; // 댓글 내용
+
     private String author; // 댓글 작성자
 
     @CreationTimestamp
@@ -31,24 +37,23 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long postId, String content, String author, Comment parent) {
-        this.postId = postId;
+    public Comment(Post post, String content, String author, Comment parent) {
+        this.post = post;
         this.content = content;
         this.author = author;
         this.parent = parent;
     }
-
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setPost(Post post) {
+        this.post = post;
     }
     public String getContent() {
         return content;

@@ -30,5 +30,16 @@ package com.whale.blog.post.service;
             return postRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("해당 ID의 게시글이 없습니다."));
         }
+
+        public List<Post> findByTitleContains(String title) {
+            return postRepository.findByTitleContains(title);
+        }
+
+        public List<Post> getPosts(String sortDir) {
+            if("asc".equalsIgnoreCase(sortDir)) {
+                return postRepository.findAllByOrderByIdAsc();
+            }
+            return postRepository.findAllByOrderByIdDesc();
+        }
     }
 

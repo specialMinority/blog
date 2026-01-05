@@ -1,16 +1,16 @@
 package com.whale.blog.post.domain;
 
 // jakarta.persistence.* 패키지를 사용합니다. (Spring Boot 3 기준)
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import com.whale.blog.comment.domain.Comment;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Formula;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity // 이 클래스가 DB 테이블(post)과 매핑됨을 JPA에 알립니다.
 public class Post {
-
+    // todo Comment 연관관계 매핑
     @Id // 이 필드가 테이블의 '기본 키(Primary Key)'임을 알립니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // DB가 ID를 자동으로 생성하도록 합니다. (MySQL의 AUTO_INCREMENT)
     private Long id;
@@ -24,6 +24,9 @@ public class Post {
 
     @Formula("(SELECT count(1) FROM heart h WHERE h.post_id = id)")
     private int likeCount;
+
+    @OneToMany
+    private List<Comment> comments;
 
     // JPA는 기본 생성자를 필요로 합니다.
     public Post() {}
