@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface JpaPostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByAuthor(String author);
+    List<Post> findByTitleContains(String title);
+    List<Post> findAllByOrderByIdDesc(); // 최신순 조회
+    List<Post> findAllByOrderByIdAsc(); // 오래된순 조회
 }

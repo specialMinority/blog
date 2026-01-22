@@ -15,9 +15,7 @@ public class MemberRestController {
         this.memberService = memberService;
     }
 
-    //todo 수정, 삭제 기능 만들기
+    //todo RestController 미구현 상태이므로 구현해야 함
 
-    // 회원가입 API
 
-    // 회원 조회 API
 }

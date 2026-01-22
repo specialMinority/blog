@@ -27,7 +27,6 @@ public class HeartController {
         }
 
         // 좋아요 토글 실행(true or false)
-        // principal.getName() = loginId
         boolean liked = heartService.toggleHeartByLoginId(principal.getName(), postId);
 
         // JS에 보낼 JSON 데이터 반환

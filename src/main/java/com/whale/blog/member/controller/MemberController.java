@@ -36,11 +36,9 @@ public class MemberController {
     }
 
     // 회원가입 처리
-    //todo Entity를 컨트롤러 레이어에서 직접 생성하지 말고 DTO이용하도록 수정(보안)
-    //todo 개별조회, 수정, 삭제 기능 만들기
     @PostMapping("/signup")
     @ResponseBody
-    public ResponseEntity<String> signup(@RequestBody JoinDto joinDto) { // ModelAttribute -> RequestBody
+    public ResponseEntity<String> signup(@RequestBody JoinDto joinDto) {
         try {
             memberService.join(joinDto);
             return ResponseEntity.ok("가입 성공");
@@ -57,29 +55,38 @@ public class MemberController {
 
     // 마이페이지 주기(GET)
     @GetMapping("/my")
-    public String my(Authentication auth, Model model) {
+    public String getMyPage(Principal principal, Model model) {
+        // Principal: 현재 로그인 중인 사용자의 인증 정보가 담김
+
+        if(principal != null) {
+            System.out.println("로그인 유저 = " + principal.getName());
+        } else {
+            return "redirect:/login"; // 로그인 안 됐으면 로그인 페이지로
+        }
+
         // 1. 로그인한 아이디 가져오기
-        String loginId = auth.getName();
+        String loginId = principal.getName();
 
         // 2. DB 조회
-        Optional<Member> memberOpt = memberService.findByLoginId(loginId);
 
-        // 3. 모델에 담기
-        if(memberOpt.isPresent()) {
-            model.addAttribute("member", memberOpt.get());
-        }
-        if(auth != null) {
-            System.out.println("로그인 유저 = " + auth.getName());
-        }
+        Member member = memberService.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없음"));
+
+        model.addAttribute("member", member);
+
+        // todo memberOpt가 null값이면 어떻게 처리할지 코드 작성
+        // todo next-step: 회원 정보를 찾을 수 없다는 알림창을 사용자에게 보여주자
+
         return "/users/my";
     }
 
     // 수정폼 주기
     @GetMapping("/edit")
-    public String editPage(Model model, Principal principal) {
-        // Principal: 현재 로그인 중인 사용자의 인증 정보가 담김
+    public String editPage(Principal principal, Model model) {
+
         String loginId = principal.getName();
+
         Optional<Member> member = memberService.findByLoginId(loginId);
+
         if(member.isPresent()) {
             model.addAttribute("member", member.get());
         }
@@ -90,7 +97,7 @@ public class MemberController {
     // 수정 처리
     @PostMapping("/edit")
     @ResponseBody
-    public ResponseEntity<String> updateMember(@RequestBody UpdateDto updateDto, Principal principal) {
+    public ResponseEntity<String> updateMember(Principal principal,@RequestBody UpdateDto updateDto) {
         try{
             memberService.updateMember(principal.getName(), updateDto);
             return ResponseEntity.ok("수정 성공");
@@ -102,7 +109,7 @@ public class MemberController {
     // 탈퇴 처리
     @PostMapping("/delete")
     @ResponseBody
-    public ResponseEntity<String> deleteMember(@RequestBody DeleteDto deleteDto, Principal principal, HttpServletRequest request) {
+    public ResponseEntity<String> deleteMember(Principal principal, @RequestBody DeleteDto deleteDto, HttpServletRequest request) {
         try{
             // 탈퇴 처리
             memberService.deleteMember(principal.getName(), deleteDto.getPassword());
@@ -118,6 +125,5 @@ public class MemberController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("비밀번호가 틀렸읍니다");
         }
-
     }
 }
