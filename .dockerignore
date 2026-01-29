@@ -1,0 +1,31 @@
+# Git 관련
+.git
+.gitignore
+.gitattributes
+
+# IDE 설정
+.idea
+.vscode
+*.iml
+*.iws
+*.ipr
+
+# 빌드 결과물 (이미 Dockerfile에서 빌드하므로 불필요)
+build/
+out/
+.gradle/
+bin/
+
+# 문서 파일
+*.md
+HELP.md
+
+# 환경 변수 파일 (보안!)
+.env
+
+# 테스트 관련
+**/test/**
+
+# 기타
+.DS_Store
+Thumbs.db
