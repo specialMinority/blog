@@ -57,7 +57,14 @@ import com.whale.blog.comment.domain.Comment;
 import com.whale.blog.comment.service.CommentService;
 import com.whale.blog.heart.service.HeartService;
 import com.whale.blog.post.domain.Post;
+import com.whale.blog.post.domain.SearchType;
+import com.whale.blog.post.dto.PostListDto;
 import com.whale.blog.post.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -85,14 +92,19 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public String list(@RequestParam(value = "sortDir", defaultValue = "desc") String sortDir, Model model) {
-        List<Post> posts = postService.getPosts(sortDir);
-        model.addAttribute("posts", posts);
-        model.addAttribute("currentSort", sortDir);
-        return "posts/list";
-    }
+    public String list(
+            @RequestParam(value = "searchType", defaultValue = "TITLE") SearchType searchType,
+            @RequestParam(value = "searchText", required = false) String searchKeyword,
+            @PageableDefault(size = 5, sort = "likeCount", direction = Sort.Direction.DESC) Pageable pageable,
+            Model model) {
 
-    //todo 1. 작성일자 Column을 추가하고 작성일자로 정렬하게 하자 2. 검색 결과 내에서도 정렬 가능하게 리팩토링 해보자
+        // 1. 별도의 Sort, PageRequest 생성 로직이 필요 없음 (pageable에 이미 다 담겨 있음)
+        // 2. 서비스 호출
+        Page<PostListDto> posts = postService.searchPosts(searchKeyword, searchType, pageable);
+
+        model.addAttribute("posts", posts);
+        return "posts/list"; // 뷰 이름
+    }
 
     @GetMapping("/new")
     public String newForm(Model model) {
@@ -113,7 +125,7 @@ public class PostController {
 
         // 2. 로그인 여부에 따라 좋아요 확인
         boolean isLiked = false;
-        if(principal != null) {
+        if (principal != null) {
             isLiked = heartService.isLiked(principal.getName(), id);
         }
 
@@ -126,12 +138,4 @@ public class PostController {
 
         return "posts/detail";
     }
-
-    @GetMapping("/search")
-    public String searchPosts(@RequestParam("searchText") String searchText, Model model) {
-        List<Post> result = postService.findByTitleContains(searchText);
-        model.addAttribute("posts", result);
-        return "posts/list";
-    }
-    //todo 본문 내용이나 작성자로도 검색할 수 있게 리팩토링 해보자
 }

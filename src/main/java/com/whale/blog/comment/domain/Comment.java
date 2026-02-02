@@ -18,7 +18,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post; // 어떤 게시글의 댓글인지
-    //todo Post - Comment 연관관계 매핑
 
     private String content; // 댓글 내용
 

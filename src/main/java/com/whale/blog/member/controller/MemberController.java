@@ -73,9 +73,6 @@ public class MemberController {
 
         model.addAttribute("member", member);
 
-        // todo memberOpt가 null값이면 어떻게 처리할지 코드 작성
-        // todo next-step: 회원 정보를 찾을 수 없다는 알림창을 사용자에게 보여주자
-
         return "/users/my";
     }
 
