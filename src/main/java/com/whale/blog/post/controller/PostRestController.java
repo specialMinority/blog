@@ -48,4 +48,24 @@ public class PostRestController {
         // @RequestBody를 통해 JSON 데이터를 Post 객체로 받습니다.
         return postService.create(post);
     }
+
+    /**
+     * [PUT] 게시글 수정
+     * @param id 수정할 게시글 ID
+     * @param post 수정할 게시글 정보
+     * @return 수정된 Post 객체
+     */
+    @PutMapping("/{id}")
+    public Post update(@PathVariable Long id, @RequestBody Post post) {
+        return postService.update(id, post);
+    }
+
+    /**
+     * [DELETE] 게시글 삭제
+     * @param id 삭제할 게시글 ID
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        postService.delete(id);
+    }
 }

@@ -1,0 +1,67 @@
+2026-01-29 15:47:25,280 - INFO - ============================================================
+2026-01-29 15:47:25,281 - INFO - Antigravity Mobile Bridge - File Watcher
+2026-01-29 15:47:25,281 - INFO - ============================================================
+2026-01-29 15:47:25,284 - INFO - Config loaded: C:\Users\PC\Google Drive\AntigravityBridge
+2026-01-29 15:47:25,285 - ERROR - Sync folder not found: C:\Users\PC\Google Drive\AntigravityBridge
+2026-01-29 15:47:25,285 - INFO - Creating sync folder...
+2026-01-29 15:47:25,289 - INFO - Created C:\Users\PC\Google Drive\AntigravityBridge\input.md
+2026-01-29 15:47:25,291 - INFO - Created C:\Users\PC\Google Drive\AntigravityBridge\output.md
+2026-01-29 15:47:25,317 - INFO - Press Ctrl+C to stop...
+2026-01-29 15:47:43,543 - INFO - Stopping watcher...
+2026-01-29 15:47:43,545 - INFO - Watcher stopped.
+2026-01-29 16:10:47,166 - INFO - ============================================================
+2026-01-29 16:10:47,167 - INFO - Antigravity Mobile Bridge - File Watcher
+2026-01-29 16:10:47,167 - INFO - ============================================================
+2026-01-29 16:10:47,169 - INFO - Config loaded: C:\Users\PC\OneDrive\AntigravityBridge
+2026-01-29 16:10:47,170 - ERROR - Sync folder not found: C:\Users\PC\OneDrive\AntigravityBridge
+2026-01-29 16:10:47,170 - INFO - Creating sync folder...
+2026-01-29 16:10:47,173 - INFO - Created C:\Users\PC\OneDrive\AntigravityBridge\input.md
+2026-01-29 16:10:47,174 - INFO - Created C:\Users\PC\OneDrive\AntigravityBridge\output.md
+2026-01-29 16:10:47,184 - INFO - Press Ctrl+C to stop...
+2026-01-29 16:15:01,477 - INFO - Stopping watcher...
+2026-01-29 16:15:01,479 - INFO - Watcher stopped.
+2026-01-29 16:15:49,119 - INFO - ============================================================
+2026-01-29 16:15:49,119 - INFO - Antigravity Mobile Bridge - File Watcher
+2026-01-29 16:15:49,120 - INFO - ============================================================
+2026-01-29 16:15:49,122 - INFO - Config loaded: C:\Users\PC\OneDrive\AntigravityBridge
+2026-01-29 16:15:49,134 - INFO - Press Ctrl+C to stop...
+2026-01-29 16:16:31,737 - INFO - Processing input.md...
+2026-01-29 16:16:31,739 - ERROR - Error processing input: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+Traceback (most recent call last):
+  File "C:\Users\PC\Downloads\blog\mobile-bridge\bridge_watcher.py", line 76, in process_input
+    prompt = f.read().strip()
+             ~~~~~~^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+2026-01-29 16:16:53,880 - INFO - Processing input.md...
+2026-01-29 16:16:53,893 - INFO - Calling Antigravity CLI...
+2026-01-29 16:16:53,914 - ERROR - Antigravity CLI not found in PATH
+2026-01-29 16:16:53,916 - INFO - Response written to output.md
+2026-01-29 16:16:53,917 - INFO - History saved: 2026-01-29_16-16-53.md
+2026-01-29 16:17:52,769 - INFO - Stopping watcher...
+2026-01-29 16:17:52,771 - INFO - Watcher stopped.
+2026-01-29 16:18:16,946 - INFO - ============================================================
+2026-01-29 16:18:16,947 - INFO - Antigravity Mobile Bridge - File Watcher
+2026-01-29 16:18:16,947 - INFO - ============================================================
+2026-01-29 16:18:16,950 - INFO - Config loaded: C:\Users\PC\OneDrive\AntigravityBridge
+2026-01-29 16:18:16,959 - INFO - Press Ctrl+C to stop...
+2026-01-29 16:19:38,345 - INFO - Processing input.md...
+2026-01-29 16:19:38,356 - INFO - Calling Antigravity CLI...
+2026-01-29 16:19:40,423 - WARNING - Antigravity returned empty response
+2026-01-29 16:19:40,425 - INFO - Response written to output.md
+2026-01-29 16:19:40,427 - INFO - History saved: 2026-01-29_16-19-40.md
+2026-01-29 16:20:05,861 - INFO - Processing input.md...
+2026-01-29 16:20:05,869 - INFO - Calling Antigravity CLI...
+2026-01-29 16:20:07,865 - WARNING - Antigravity returned empty response
+2026-01-29 16:20:07,867 - INFO - Response written to output.md
+2026-01-29 16:20:07,869 - INFO - History saved: 2026-01-29_16-20-07.md
+2026-01-29 16:20:46,746 - INFO - Processing input.md...
+2026-01-29 16:20:46,756 - INFO - Calling Antigravity CLI...
+2026-01-29 16:20:48,619 - WARNING - Antigravity returned empty response
+2026-01-29 16:20:48,621 - INFO - Response written to output.md
+2026-01-29 16:20:48,623 - INFO - History saved: 2026-01-29_16-20-48.md
+2026-01-29 16:21:28,949 - INFO - Processing input.md...
+2026-01-29 16:21:28,956 - INFO - Calling Antigravity CLI...
+2026-01-29 16:21:30,946 - WARNING - Antigravity returned empty response
+2026-01-29 16:21:30,948 - INFO - Response written to output.md
+2026-01-29 16:21:30,950 - INFO - History saved: 2026-01-29_16-21-30.md

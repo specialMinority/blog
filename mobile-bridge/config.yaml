@@ -1,0 +1,7 @@
+sync_folder: "C:\\Users\\PC\\OneDrive\\AntigravityBridge"
+input_file: "input.md"
+output_file: "output.md"
+history_folder: "history"
+enable_history: true
+debounce_seconds: 2
+antigravity_cli_path: "C:\\Users\\PC\\AppData\\Local\\Programs\\Antigravity\\bin\\antigravity.cmd"
