@@ -73,7 +73,7 @@ public class MemberController {
 
         model.addAttribute("member", member);
 
-        return "/users/my";
+        return "users/my";
     }
 
     // 수정폼 주기
