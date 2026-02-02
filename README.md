@@ -25,10 +25,11 @@ graph LR
 ### 📸 スクリーンショット (Screenshots)
 
 **ホーム画面 (Home)**
-![Home Screen](docs/img/home.png)
+<img width="2018" height="1006" alt="image" src="https://github.com/user-attachments/assets/1e75e2b7-1cda-4c5e-9a04-9192b7335501" />
 
 **投稿一覧 (Post List)**
-![Post List](docs/img/list.png)
+<img width="1352" height="1084" alt="image" src="https://github.com/user-attachments/assets/2acb44c6-128d-4c46-b56f-e99e9cd26c7c" />
+
 
 *(実際のAWS EC2環境で動作している画面です)*
 
