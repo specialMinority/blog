@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/images/**", "/css/**", "/js/**");
+        return (web) -> web.ignoring().requestMatchers("/images/**", "/css/**", "/js/**", "/*.css");
     }
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/posts", "/users/login", "/users/signup", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/posts", "/users/login", "/users/signup", "/css/**", "/js/**", "/images/**", "/*.css").permitAll()
                         .anyRequest().authenticated()
                 )
                 // 1. formLogin 설정
