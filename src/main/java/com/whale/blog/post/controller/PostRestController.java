@@ -3,6 +3,8 @@ package com.whale.blog.post.controller;
 // 1. [수정] Post 대신 InmemmoryPost를 임포트합니다.
 import com.whale.blog.post.domain.Post;
 import com.whale.blog.post.service.PostService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,9 +46,10 @@ public class PostRestController {
      * 매개변수 및 반환 타입: Post
      */
     @PostMapping
-    public Post create(@RequestBody Post post) {
+    public Post create(@RequestBody Post post, @AuthenticationPrincipal UserDetails userDetails) {
         // @RequestBody를 통해 JSON 데이터를 Post 객체로 받습니다.
-        return postService.create(post);
+        String loginId = userDetails.getUsername();
+        return postService.create(post, loginId);
     }
 
     /**

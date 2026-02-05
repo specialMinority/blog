@@ -56,6 +56,7 @@ package com.whale.blog.post.controller;
 import com.whale.blog.comment.domain.Comment;
 import com.whale.blog.comment.service.CommentService;
 import com.whale.blog.heart.service.HeartService;
+import com.whale.blog.member.repository.JpaMemberRepository;
 import com.whale.blog.post.domain.Post;
 import com.whale.blog.post.domain.SearchType;
 import com.whale.blog.post.dto.PostListDto;
@@ -79,11 +80,13 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService; // 댓글 기능
     private final HeartService heartService; // 좋아요 기능
+    private final JpaMemberRepository memberRepository; // Member 조회용
 
-    public PostController(PostService postService, CommentService commentService, HeartService heartService) {
+    public PostController(PostService postService, CommentService commentService, HeartService heartService, JpaMemberRepository memberRepository) {
         this.postService = postService;
         this.commentService = commentService;
         this.heartService = heartService;
+        this.memberRepository = memberRepository;
     }
 
     @GetMapping
@@ -114,11 +117,13 @@ public class PostController {
 
     @PostMapping
     public String create(@ModelAttribute Post post, Principal principal) {
-        // 로그인한 사용자로 작성자 자동 설정
+        // 로그인한 사용자의 loginId를 서비스로 전달
         if (principal != null) {
-            post.setAuthor(principal.getName());
+            String loginId = principal.getName();
+            postService.create(post, loginId);
+        } else {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
         }
-        postService.create(post);
         return "redirect:/posts/list";
     }
 
@@ -130,10 +135,17 @@ public class PostController {
         // 2. 로그인 여부에 따라 좋아요 확인 및 작성자 본인 확인
         boolean isLiked = false;
         boolean isAuthor = false;
+        String currentUserNickname = null;
+        
         if (principal != null) {
             String loginId = principal.getName();
             isLiked = heartService.isLiked(loginId, id);
             isAuthor = post.getAuthor() != null && post.getAuthor().equals(loginId);
+            
+            // 현재 사용자의 nickname 조회
+            memberRepository.findByLoginId(loginId).ifPresent(member -> {
+                model.addAttribute("currentUserNickname", member.getNickname());
+            });
         }
 
         model.addAttribute("post", post);

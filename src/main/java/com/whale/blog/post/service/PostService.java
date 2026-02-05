@@ -1,5 +1,7 @@
 package com.whale.blog.post.service;
 
+import com.whale.blog.member.domain.Member;
+import com.whale.blog.member.repository.JpaMemberRepository;
 import com.whale.blog.post.domain.Post;
 import com.whale.blog.post.domain.SearchType;
 import com.whale.blog.post.dto.PostListDto;
@@ -17,16 +19,24 @@ public class PostService {
 
     private final JpaPostRepository postRepository;
     private final com.whale.blog.heart.repository.HeartRepository heartRepository;
+    private final JpaMemberRepository memberRepository;
 
-    public PostService(JpaPostRepository postRepository, com.whale.blog.heart.repository.HeartRepository heartRepository) {
+    public PostService(JpaPostRepository postRepository, com.whale.blog.heart.repository.HeartRepository heartRepository, JpaMemberRepository memberRepository) {
         this.postRepository = postRepository;
         this.heartRepository = heartRepository;
+        this.memberRepository = memberRepository;
     }
 
-    public Post create(Post post) {
+    public Post create(Post post, String currentUserLoginId) {
         if (post.getTitle() == null || post.getTitle().isBlank()) {
             throw new IllegalArgumentException("게시글 제목은 필수입니다.");
         }
+        
+        // loginId로 Member 조회하여 nickname 가져오기
+        Member member = memberRepository.findByLoginId(currentUserLoginId)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
+        
+        post.setAuthor(member.getNickname());
         return postRepository.save(post);
     }
 

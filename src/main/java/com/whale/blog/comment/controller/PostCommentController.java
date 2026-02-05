@@ -1,13 +1,14 @@
 package com.whale.blog.comment.controller;
 
 import com.whale.blog.comment.service.CommentService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-
 public class PostCommentController {
 
     private final CommentService commentService;
@@ -17,22 +18,21 @@ public class PostCommentController {
     }
 
     // 댓글 등록
-    // 역할: 댓글을 저장하고 다시 게시글 상세 페이지로 리다이렉트
     @PostMapping("/posts/{postId}/comments")
-    public String create(@PathVariable Long postId, @RequestParam String content, @RequestParam String author, @RequestParam(required = false) Long parentId) {
-
-        //1. 서비스에게 댓글 저장을 시킨다.
-        commentService.create(postId, content, author, parentId);
-
-        //2. 저장이 끝나면 보던 게시글로 돌아간다.
+    public String create(@PathVariable Long postId, 
+                         @RequestParam String content, 
+                         @RequestParam(required = false) Long parentId,
+                         @AuthenticationPrincipal UserDetails userDetails) {
+        String loginId = userDetails.getUsername();
+        commentService.create(postId, content, loginId, parentId);
         return "redirect:/posts/" + postId;
     }
 
     // 댓글 삭제
     @PostMapping("/comments/{id}/delete")
-    public String delete(@PathVariable Long id, @RequestParam Long postId) {
-        commentService.delete(id);
+    public String delete(@PathVariable Long id, @RequestParam Long postId, @AuthenticationPrincipal UserDetails userDetails) {
+        String currentUser = userDetails.getUsername();
+        commentService.delete(id, currentUser);
         return "redirect:/posts/" + postId;
     }
 }
-    
