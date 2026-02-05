@@ -29,7 +29,8 @@ graph LR
 
 
 **投稿一覧 (Post List)**
-<img width="100%" alt="Post List" src="docs/images/post_list.png" />
+<img width="1817" height="2566" alt="image" src="https://github.com/user-attachments/assets/937cb9bd-642a-4a28-bda6-258767125003" />
+
 
 *(実際のAWS EC2環境で動作している画面です)*
 
