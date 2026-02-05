@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/posts", "/users/login", "/users/signup", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/posts", "/users/login", "/users/signup", "/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // 1. formLogin 설정

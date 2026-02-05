@@ -13,27 +13,29 @@ body {
     font-size: 16px;
     line-height: 1.6;
     color: #333;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
+    /* 배경색 흰색으로 변경 */
 
     /* 하단 배경 이미지 추가 */
     position: relative;
     min-height: 100vh;
     padding-bottom: 25vw;
-    /* 데스크탑 기준 이미지 공간 확보 */
     box-sizing: border-box;
-    background-image: url('/images/footer_bg.jpg');
-    background-position: bottom center;
+    background-image: url('/images/footer_bg.png');
+    background-position: center bottom;
+    /* 하단 중앙 배치 (화면 중간보다 아래) */
     background-repeat: no-repeat;
-    background-size: 100% auto;
+    background-size: 70% auto;
+    /* 크기 30% 축소 (100% -> 70%) */
 }
 
 /* 모바일 하단 배경 조정 */
 @media (max-width: 768px) {
     body {
         padding-bottom: 60vw;
-        /* 모바일에서 이미지 높이 비율 증가 */
         background-size: 160% auto;
-        /* 모바일에서 이미지 확대 */
+        background-position: center bottom -15vw;
+        /* 모바일에서도 아래로 조정 */
     }
 }
 
