@@ -1,0 +1,51 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to EC2
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
+        EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      run: |
+        # SSH 키 설정
+        echo "$EC2_SSH_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        
+        # EC2에 SSH 접속하여 배포 스크립트 실행
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+          cd /home/ec2-user/apps/blog
+          git pull origin main
+          docker-compose down
+          docker-compose up -d --build
+        EOF
+        
+        # 임시 키 파일 삭제
+        rm -f private_key.pem
+    
+    - name: Verify deployment
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+      run: |
+        echo "Waiting for services to start..."
+        sleep 30
+        
+        # 배포 확인
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${EC2_HOST}/posts)
+        if [ $HTTP_STATUS -eq 200 ] || [ $HTTP_STATUS -eq 302 ]; then
+          echo "✅ Deployment successful! HTTP Status: $HTTP_STATUS"
+        else
+          echo "❌ Deployment may have failed. HTTP Status: $HTTP_STATUS"
+          exit 1
+        fi
