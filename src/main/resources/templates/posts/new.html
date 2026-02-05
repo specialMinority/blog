@@ -20,8 +20,7 @@
   <label for="title">제목</label>
   <input id="title" type="text" th:field="*{title}" required />
 
-  <label for="author">작성자</label>
-  <input id="author" type="text" th:field="*{author}" />
+  <!-- 작성자는 로그인한 사용자로 자동 설정됩니다 -->
 
   <label for="content">내용</label>
   <textarea id="content" rows="8" th:field="*{content}"></textarea>

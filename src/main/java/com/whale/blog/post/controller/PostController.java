@@ -113,7 +113,11 @@ public class PostController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Post post) {
+    public String create(@ModelAttribute Post post, Principal principal) {
+        // 로그인한 사용자로 작성자 자동 설정
+        if (principal != null) {
+            post.setAuthor(principal.getName());
+        }
         postService.create(post);
         return "redirect:/posts/list";
     }
