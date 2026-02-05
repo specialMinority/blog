@@ -25,7 +25,7 @@ public class Post {
     @Formula("(SELECT count(1) FROM heart h WHERE h.post_id = id)")
     private int likeCount;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<Comment>();
 
     // JPA는 기본 생성자를 필요로 합니다.

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>投稿修正</title>
+  <link rel="stylesheet" href="/responsive.css?v=5">
+  <style>
+    body{font-family:'Noto Sans JP', sans-serif;max-width:720px;margin:2rem auto;padding:15px}
+    label{display:block;margin:.6rem 0 .2rem;font-weight:bold}
+    input,textarea{width:100%;padding:.8rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:16px}
+    .row{margin-top:1rem;display:flex;gap:.5rem}
+    .btn{padding:.8rem 1.5rem;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#f6f6f6;font-size:16px}
+    .btn-primary{background:#007bff;color:white;border:none}
+    a{text-decoration:none;color:#0366d6}
+  </style>
+</head>
+<body>
+<h1>投稿修正</h1>
+<form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post" th:object="${post}">
+  <label for="title">タイトル</label>
+  <input id="title" type="text" th:field="*{title}" required />
+
+  <label for="content">内容</label>
+  <textarea id="content" rows="10" th:field="*{content}"></textarea>
+
+  <div class="row">
+    <button class="btn btn-primary" type="submit">修正完了</button>
+    <a class="btn" th:href="@{/posts/{id}(id=${post.id})}" style="display:flex;align-items:center;">キャンセル</a>
+  </div>
+</form>
+</body>
+</html>

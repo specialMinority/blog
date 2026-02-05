@@ -46,6 +46,14 @@
     <br>
     <span class="like-count" id="likeCount" th:text="${post.likeCount}">0</span>人がいいねしました
 </div>
+
+<div th:if="${isAuthor}" class="post-actions" style="margin: 1rem 0; text-align: right; border-top: 1px solid #eee; padding-top: 1rem;">
+    <a th:href="@{/posts/{id}/edit(id=${post.id})}" class="btn" style="padding: 8px 15px; background: #fff; border: 1px solid #ddd; border-radius: 4px; color: #555; cursor: pointer; text-decoration: none;">修正</a>
+    <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" style="display:inline;">
+        <button type="submit" class="btn" style="padding: 8px 15px; background: #fff; border: 1px solid #dc3545; border-radius: 4px; color: #dc3545; cursor: pointer; margin-left: 5px;" onclick="return confirm('本当に削除しますか？')">削除</button>
+    </form>
+</div>
+
 <div class="comment-section">
     <h3>コメント</h3>
     <form class="comment-form" th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">

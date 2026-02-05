@@ -16,9 +16,11 @@ import java.util.List;
 public class PostService {
 
     private final JpaPostRepository postRepository;
+    private final com.whale.blog.heart.repository.HeartRepository heartRepository;
 
-    public PostService(JpaPostRepository postRepository) {
+    public PostService(JpaPostRepository postRepository, com.whale.blog.heart.repository.HeartRepository heartRepository) {
         this.postRepository = postRepository;
+        this.heartRepository = heartRepository;
     }
 
     public Post create(Post post) {
@@ -78,6 +80,11 @@ public class PostService {
      */
     public void delete(Long id) {
         Post post = findById(id);
+        
+        // 좋아요 삭제 (FK 제약조건 해결)
+        heartRepository.deleteByPost(post);
+        
+        // 게시글 삭제 (댓글은 Cascade로 자동 삭제됨)
         postRepository.delete(post);
     }
 }

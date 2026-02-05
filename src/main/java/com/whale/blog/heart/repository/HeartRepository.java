@@ -21,4 +21,7 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
 
     // 4. 회원이 누른 좋아요 삭제 (회원 탈퇴 시 사용)
     void deleteByMember(Member member);
+
+    // 5. 게시글 삭제 시 해당 글의 좋아요 삭제
+    void deleteByPost(Post post);
 }

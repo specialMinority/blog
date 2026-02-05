@@ -127,19 +127,65 @@ public class PostController {
         // 1. 게시글 조회
         Post post = postService.findById(id);
 
-        // 2. 로그인 여부에 따라 좋아요 확인
+        // 2. 로그인 여부에 따라 좋아요 확인 및 작성자 본인 확인
         boolean isLiked = false;
+        boolean isAuthor = false;
         if (principal != null) {
-            isLiked = heartService.isLiked(principal.getName(), id);
+            String loginId = principal.getName();
+            isLiked = heartService.isLiked(loginId, id);
+            isAuthor = post.getAuthor() != null && post.getAuthor().equals(loginId);
         }
 
         model.addAttribute("post", post);
         model.addAttribute("isLiked", isLiked);
+        model.addAttribute("isAuthor", isAuthor); // 본인 확인용 플래그
 
         // 3. 댓글 조회 등...
         List<Comment> comments = commentService.findAll(id);
         model.addAttribute("comments", comments);
 
         return "posts/detail";
+    }
+
+    // 수정 폼
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model, Principal principal) {
+        Post post = postService.findById(id);
+        
+        // 작성자 검증
+        if (principal == null || !post.getAuthor().equals(principal.getName())) {
+            throw new IllegalArgumentException("修正権限がありません。");
+        }
+
+        model.addAttribute("post", post);
+        return "posts/edit"; // 수정 폼 템플릿
+    }
+
+    // 수정 처리
+    @PostMapping("/{id}/edit")
+    public String update(@PathVariable Long id, @ModelAttribute Post post, Principal principal) {
+        Post originalPost = postService.findById(id);
+
+        // 작성자 검증
+        if (principal == null || !originalPost.getAuthor().equals(principal.getName())) {
+            throw new IllegalArgumentException("修正権限がありません。");
+        }
+
+        postService.update(id, post);
+        return "redirect:/posts/" + id;
+    }
+
+    // 삭제 처리
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id, Principal principal) {
+        Post post = postService.findById(id);
+
+        // 작성자 검증
+        if (principal == null || !post.getAuthor().equals(principal.getName())) {
+            throw new IllegalArgumentException("削除権限がありません。");
+        }
+
+        postService.delete(id);
+        return "redirect:/posts/list";
     }
 }
