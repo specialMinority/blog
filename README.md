@@ -25,13 +25,32 @@ graph LR
 ### 📸 スクリーンショット (Screenshots)
 
 **ホーム画面 (Home)**
-<img width="2018" height="1006" alt="image" src="https://github.com/user-attachments/assets/1e75e2b7-1cda-4c5e-9a04-9192b7335501" />
+<img width="100%" alt="Home Screen" src="docs/images/main_hero.png" />
 
 **投稿一覧 (Post List)**
-<img width="1352" height="1084" alt="image" src="https://github.com/user-attachments/assets/2acb44c6-128d-4c46-b56f-e99e9cd26c7c" />
-
+<img width="100%" alt="Post List" src="docs/images/post_list.png" />
 
 *(実際のAWS EC2環境で動作している画面です)*
+
+---
+
+### 🔄 CI/CD パイプライン (CI/CD Pipeline)
+
+GitHub Actionsを活用して、コードの変更を自動的にテストし、AWS EC2環境へ即座にデプロイするパイプラインを構築しました。
+
+```mermaid
+graph LR
+    Dev[Developer] -->|Push| GitHub[GitHub Repo]
+    GitHub -->|Trigger| Actions[GitHub Actions]
+    subgraph CI/CD Process
+        Actions -->|Build & Test| Build[Gradle Build]
+        Build -->|Deploy| EC2[AWS EC2]
+    end
+    EC2 -->|Restart| Docker[Docker Compose Up]
+```
+
+- **自動化されたデプロイ**: `main`ブランチへのプッシュをトリガーに、ビルド、テスト、デプロイが自動実行されます。
+- **ダウンタイムの最小化**: Docker Composeを活用し、迅速なサービスの更新を実現しています。
 
 ---
 
