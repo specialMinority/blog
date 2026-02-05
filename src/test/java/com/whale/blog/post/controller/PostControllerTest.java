@@ -11,11 +11,19 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.assertj.core.api.Assertions;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import com.whale.blog.member.domain.Member;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * PostController 테스트
@@ -37,6 +45,18 @@ class PostControllerTest {
     @MockBean
     private com.whale.blog.heart.service.HeartService heartService;
 
+    @MockBean
+    private com.whale.blog.member.repository.JpaMemberRepository memberRepository;
+    
+    @BeforeEach
+    void setUp() {
+        Member testMember = new Member("testuser", "password", "테스터");
+        given(memberRepository.findByLoginId("testuser")).willReturn(Optional.of(testMember));
+        
+        Member anotherMember = new Member("anotheruser", "password", "다른유저");
+        given(memberRepository.findByLoginId("anotheruser")).willReturn(Optional.of(anotherMember));
+    }
+
     @Test
     @DisplayName("로그인한 사용자로 글 작성 시 작성자가 자동으로 설정된다")
     @WithMockUser(username = "testuser")
@@ -44,33 +64,34 @@ class PostControllerTest {
         // When & Then
         mockMvc.perform(post("/posts")
                         .with(csrf())
+                        .principal(new TestingAuthenticationToken("testuser", null)) // Principal 직접 주입
                         .param("title", "테스트 제목")
                         .param("content", "테스트 내용"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/posts/list"));
         
-        // Verify: postService.create() was called
-        verify(postService).create(argThat(post ->
-                post.getTitle().equals("테스트 제목") &&
-                post.getContent().equals("테스트 내용")
-        ));
+        // Verify: postService.create() was called with loginId
+        verify(postService).create(
+                argThat(post ->
+                        post.getTitle().equals("테스트 제목") &&
+                        post.getContent().equals("테스트 내용")
+                ),
+                eq("testuser")
+        );
     }
 
-    @Test
-    @DisplayName("비로그인 상태에서 글 작성 시 작성자가 null이다")
-    void createPost_withoutAuthentication_shouldHaveNullAuthor() throws Exception {
-        // When & Then
-        mockMvc.perform(post("/posts")
-                        .with(csrf())
-                        .param("title", "테스트 제목")
-                        .param("content", "테스트 내용"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts/list"));
 
-        // Verify: postService.create() was called
-        verify(postService).create(argThat(post ->
-                post.getTitle().equals("테스트 제목")
-        ));
+
+    @Test
+    @DisplayName("비로그인 상태에서 글 작성 시 예외가 발생한다")
+    void createPost_withoutAuthentication_shouldThrowException() {
+        // When & Then
+        Assertions.assertThatThrownBy(() -> 
+            mockMvc.perform(post("/posts")
+                            .with(csrf())
+                            .param("title", "테스트 제목")
+                            .param("content", "테스트 내용"))
+        ).hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -80,14 +101,18 @@ class PostControllerTest {
         // When & Then
         mockMvc.perform(post("/posts")
                         .with(csrf())
+                        .principal(new TestingAuthenticationToken("anotheruser", null)) // Principal 직접 주입
                         .param("title", "다른 사용자의 글")
                         .param("content", "내용"))
                 .andExpect(status().is3xxRedirection());
 
-        // Verify: postService.create() was called
-        verify(postService).create(argThat(post ->
-                post.getTitle().equals("다른 사용자의 글")
-        ));
+        // Verify: postService.create() was called with anotheruser's loginId
+        verify(postService).create(
+                argThat(post ->
+                        post.getTitle().equals("다른 사용자의 글")
+                ),
+                eq("anotheruser")
+        );
     }
 
     @Test
