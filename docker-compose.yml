@@ -28,7 +28,7 @@ services:
     container_name: blog-app
     environment:
       # 환경변수로 설정 주입
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/blog?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL:-jdbc:mysql://db:3306/blog?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-bloguser}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-blogpassword}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
