@@ -25,7 +25,8 @@ graph LR
 ### 📸 スクリーンショット (Screenshots)
 
 **ホーム画面 (Home)**
-<img width="100%" alt="Home Screen" src="docs/images/main_hero.png" />
+<img width="2068" height="2541" alt="image" src="https://github.com/user-attachments/assets/8b70427f-f9c2-4678-87d2-b5d7f98075f8" />
+
 
 **投稿一覧 (Post List)**
 <img width="100%" alt="Post List" src="docs/images/post_list.png" />
