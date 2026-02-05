@@ -17,25 +17,24 @@ body {
     /* 배경색 흰색으로 변경 */
 
     /* 하단 배경 이미지 추가 */
+    /* 하단 배경 이미지 추가 (Shorthand로 변경) */
     position: relative;
     min-height: 100vh;
     padding-bottom: 25vw;
     box-sizing: border-box;
-    background-image: url('/images/footer_bg.png');
-    background-position: center bottom;
-    /* 하단 중앙 배치 (화면 중간보다 아래) */
-    background-repeat: no-repeat;
+    background: #ffffff url('/images/footer_bg.png') no-repeat center bottom;
     background-size: 70% auto;
-    /* 크기 30% 축소 (100% -> 70%) */
 }
 
 /* 모바일 하단 배경 조정 */
 @media (max-width: 768px) {
     body {
-        padding-bottom: 60vw;
-        background-size: 160% auto;
-        background-position: center bottom -15vw;
-        /* 모바일에서도 아래로 조정 */
+        padding-bottom: 80vw;
+        /* 이미지 높이만큼 여백 확보 */
+        background-size: 100% auto !important;
+        /* 화면 너비에 맞춤, 우선순위 상향 */
+        background-position: center bottom !important;
+        /* 하단 고정 */
     }
 }
 
@@ -227,7 +226,7 @@ td a:hover {
 @media (max-width: 767px) {
     body {
         font-size: 14px;
-        background: #fff;
+        background-color: #fff;
     }
 
     .container {
