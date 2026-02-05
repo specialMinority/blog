@@ -48,7 +48,7 @@ jobs:
       run: |
         # SSH 키 설정
         echo "$EC2_SSH_KEY" > private_key.pem
-        chmod 600 private_key.pem
+        chmod 400 private_key.pem
         
         # EC2에 SSH 접속하여 배포 스크립트 실행
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'

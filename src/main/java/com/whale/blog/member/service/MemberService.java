@@ -16,10 +16,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.whale.blog.heart.repository.HeartRepository heartRepository;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, com.whale.blog.heart.repository.HeartRepository heartRepository) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.heartRepository = heartRepository;
     }
 
     // 회원 가입
@@ -35,7 +37,7 @@ public class MemberService {
     // 중복 회원 검증 로직
     private void validateDuplicateMember(JoinDto joinDto) {
         memberRepository.findByLoginId(joinDto.getLoginId()).ifPresent(m -> {
-            throw new IllegalStateException("이미 존재하는 아이디입니다.");
+            throw new IllegalStateException("すでに存在するIDです。");
         });
     }
 
@@ -49,7 +51,7 @@ public class MemberService {
     @Transactional
     public void updateMember(String loginId, UpdateDto updateDto) {
         // 1. 로그인한 사용자 찾기
-        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("회원정보가 없습니다"));
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("会員情報がありません。"));
 
         // 2. 닉네임 변경
         member.setNickname(updateDto.getNickname());
@@ -63,12 +65,15 @@ public class MemberService {
     // 삭제
     @Transactional
     public void deleteMember(String loginId, String password) {
-        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("회원정보가 없습니다"));
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("会員情報がありません。"));
 
         // 비밀번호 확인
         if(!passwordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다");
+            throw new IllegalStateException("パスワードが一致しません。");
         }
+
+        // 좋아요 기록 먼저 삭제 (FK 제약조건 해결)
+        heartRepository.deleteByMember(member);
 
         //삭제
         memberRepository.delete(member);

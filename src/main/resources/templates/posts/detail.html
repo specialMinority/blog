@@ -1,268 +1,122 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+﻿<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${post.title}">게시글</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title}">投稿</title>
+    <link rel="stylesheet" href="/responsive.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        body {
-            font-family: sans-serif;
-            max-width: 720px;
-            margin: 2rem auto
-        }
-
-        .muted {
-            color: #666;
-            font-size: .9rem
-        }
-
-        a {
-            color: #0366d6;
-            text-decoration: none
-        }
-
-        pre {
-            white-space: pre-wrap;
-            background: #f6f6f6;
-            padding: 1rem;
-            border-radius: 6px;
-        }
-
-        /* 댓글 영역 스타일 */
-        .comment-section {
-            margin-top: 3rem;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-
-        .comment-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .comment-input {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .comment-content {
-            flex-grow: 1;
-        }
-
-        .comment-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ccc;
-            background: #f8f8f8;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .comment-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .comment-item {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-btn {
-            color: #dc3545;
-            font-size: 0.8rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* 2. 좋아요 버튼 스타일 추가 */
-        .heart-container {
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        /* 가운데 정렬 */
-        .heart-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 2rem;
-            color: #ccc;
-            transition: transform 0.2s;
-        }
-
-        .heart-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .heart-btn.active {
-            color: #ff4757; /* 활성화되면 빨간색 */
-        }
-
-        .like-count {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-left: 5px;
-            color: #333;
-        }
-
-
-        /* 대댓글 들여쓰기 */
-        .reply-item {
-            margin-left: 40px;
-            background: #fafafa;
-            border-left: 3px solid #ddd;
-            padding-left: 10px;
-        }
-
-        /* 답글 폼 숨김 처리 */
-        .reply-form {
-            display: none;
-            margin-top: 10px;
-            margin-left: 40px;
-        }
-
-        /* 작은 버튼 */
-        .btn-sm {
-            font-size: 0.8rem;
-            padding: 2px 8px;
-            border: 1px solid #ccc;
-            background: white;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
+        body { font-family: 'Noto Sans JP', sans-serif; max-width: 800px; margin: 2rem auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; word-break: break-all; }
+        .muted { color: #666; font-size: 0.9rem; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; }
+        pre { background: #f8f9fa; padding: 20px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 1rem; color: #333; border: 1px solid #e9ecef; min-height: 200px; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .heart-container { text-align: center; margin: 3rem 0; }
+        .heart-btn { background: none; border: none; cursor: pointer; font-size: 2.5rem; color: #ccc; transition: all 0.2s; padding: 10px; }
+        .heart-btn.active { color: #ff4757; transform: scale(1.1); }
+        .heart-btn:hover { transform: scale(1.1); }
+        .like-count { font-size: 1.2rem; font-weight: bold; color: #555; }
+        .comment-section { margin-top: 4rem; border-top: 1px solid #eee; padding-top: 2rem; }
+        .comment-list { list-style: none; padding: 0; }
+        .comment-item { padding: 15px; border-bottom: 1px solid #f1f1f1; }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-form { display: flex; gap: 10px; margin-bottom: 2rem; }
+        .comment-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .comment-btn { padding: 0 20px; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .reply-form { margin-top: 10px; margin-left: 20px; display: none; }
+        .reply-item { margin-left: 40px; background: #f9f9f9; border-radius: 8px; margin-top: 10px; }
+        .btn-sm { font-size: 12px; padding: 2px 8px; border: 1px solid #ddd; background: white; border-radius: 4px; color: #666; cursor: pointer; margin-left: 10px; }
+        .delete-btn { font-size: 12px; color: #dc3545; background: none; border: none; cursor: pointer; text-decoration: underline; margin-left: 5px; }
     </style>
 </head>
 <body>
-
-<a th:href="@{/posts/list}">&larr; 목록으로 돌아가기</a>
-
-<h1 th:text="${post.title}">제목</h1>
+<a th:href="@{/posts/list}">&larr; 一覧に戻る</a>
+<h1 th:text="${post.title}">タイトル</h1>
 <p class="muted">
-    <span>글번호 #</span><span th:text="${post.id}">1</span> ·
-    <span th:text="${post.author}">작성자</span>
+    <span>投稿番号 #</span><span th:text="${post.id}">1</span> ·
+    <span th:text="${post.author}">投稿者</span>
 </p>
-<pre th:text="${post.content}">게시글 내용입니다.</pre>
-
+<pre th:text="${post.content}">投稿内容です。</pre>
 <div class="heart-container">
-    <button class="heart-btn"
-            id="heartBtn"
-            th:classappend="${isLiked} ? 'active' : ''"
-            th:onclick="'toggleLike(' + ${post.id} + ')'">
+    <button class="heart-btn" id="heartBtn" th:classappend="${isLiked} ? 'active' : ''" th:onclick="'toggleLike(' + ${post.id} + ')'">
         <i class="fa-solid fa-heart"></i>
     </button>
     <br>
-    <span class="like-count" id="likeCount" th:text="${post.likeCount}">0</span>명이 좋아합니다
+    <span class="like-count" id="likeCount" th:text="${post.likeCount}">0</span>人がいいねしました
 </div>
-
-
 <div class="comment-section">
-    <h3>댓글</h3>
-
+    <h3>コメント</h3>
     <form class="comment-form" th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">
         <input type="text" name="author" th:value="${#authentication.name}" readonly class="comment-input" style="width: 15%; background:#eee;" />
-        <input type="text" name="content" placeholder="댓글을 입력하세요..." class="comment-input comment-content" required />
-        <button type="submit" class="comment-btn">등록</button>
+        <input type="text" name="content" placeholder="コメントを入力..." class="comment-input comment-content" required />
+        <button type="submit" class="comment-btn">登録</button>
     </form>
-
     <ul class="comment-list">
         <li th:each="comment : ${comments}">
-
             <div class="comment-item">
                 <div>
-                    <strong th:text="${comment.author}">작성자</strong>:
-                    <span th:text="${comment.content}">내용</span>
-
-                    <button type="button" class="btn-sm" th:onclick="'toggleReplyForm(' + ${comment.id} + ')'">답글</button>
-
+                    <strong th:text="${comment.author}">投稿者</strong>:
+                    <span th:text="${comment.content}">内容</span>
+                    <button type="button" class="btn-sm" th:onclick="'toggleReplyForm(' + ${comment.id} + ')'">返信</button>
                     <form th:action="@{/comments/{id}/delete(id=${comment.id})}" method="post" style="display:inline;">
                         <input type="hidden" name="postId" th:value="${post.id}" />
-                        <button type="submit" class="delete-btn" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+                        <button type="submit" class="delete-btn" onclick="return confirm('削除しますか?')">削除</button>
                     </form>
                 </div>
             </div>
-
             <div th:each="reply : ${comment.children}" class="comment-item reply-item">
                 <div>
-                    ↳ <strong th:text="${reply.author}">작성자</strong>:
-                    <span th:text="${reply.content}">대댓글 내용</span>
-
+                    ↳ <strong th:text="${reply.author}">投稿者</strong>:
+                    <span th:text="${reply.content}">返信内容</span>
                     <form th:action="@{/comments/{id}/delete(id=${reply.id})}" method="post" style="display:inline;">
                         <input type="hidden" name="postId" th:value="${post.id}" />
-                        <button type="submit" class="delete-btn" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+                        <button type="submit" class="delete-btn" onclick="return confirm('削除しますか?')">削除</button>
                     </form>
                 </div>
             </div>
-
-            <form th:id="'replyForm-' + ${comment.id}" class="comment-form reply-form"
-                  th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">
-
+            <form th:id="'replyForm-' + ${comment.id}" class="comment-form reply-form" th:action="@{/posts/{postId}/comments(postId=${post.id})}" method="post">
                 <input type="hidden" name="parentId" th:value="${comment.id}" />
-
                 <input type="text" name="author" th:value="${#authentication.name}" readonly class="comment-input" style="width: 15%; background:#eee;" />
-                <input type="text" name="content" placeholder="답글 내용을 입력하세요..." class="comment-input comment-content" required />
-                <button type="submit" class="comment-btn">등록</button>
+                <input type="text" name="content" placeholder="返信内容を入力..." class="comment-input comment-content" required />
+                <button type="submit" class="comment-btn">登録</button>
             </form>
-
         </li>
-
         <li th:if="${#lists.isEmpty(comments)}" style="color: #999; text-align: center; margin-top: 2rem;">
-            아직 작성된 댓글이 없습니다.
+            まだコメントがありません。
         </li>
     </ul>
 </div>
-
-
 <script>
     function toggleLike(postId) {
         fetch('/posts/' + postId + '/like', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'}
-        })
-            .then(response => {
-                if (response.status === 401) {
-                    alert("로그인이 필요합니다!");
-                    location.href = "/users/login"; // 로그인 페이지로 이동
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                // data.liked가 true면 좋아요 누름, false면 취소
-                if (data) {
-                    const btn = document.getElementById('heartBtn');
-                    const countSpan = document.getElementById('likeCount');
-                    let currentCount = parseInt(countSpan.innerText);
-
-                    if (data.liked) {
-                        btn.classList.add('active'); // 빨간색으로
-                        countSpan.innerText = currentCount + 1; // 숫자 +1
-                    } else {
-                        btn.classList.remove('active'); // 회색으로
-                        countSpan.innerText = currentCount - 1; // 숫자 -1
-                    }
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        }).then(response => {
+            if (response.status === 401) {
+                alert("ログインが必要です！");
+                location.href =  "/users/login";
+                return;
+            }
+            return response.json();
+        }).then(data => {
+            if (data) {
+                document.getElementById('likeCount').innerText = data.likeCount;
+                const btn = document.getElementById('heartBtn');
+                if (data.liked) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        });
     }
-
     function toggleReplyForm(commentId) {
         const form = document.getElementById('replyForm-' + commentId);
         if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'flex'; // 폼 열기
+            form.style.display = 'flex';
         } else {
-            form.style.display = 'none'; // 폼 닫기
+            form.style.display = 'none';
         }
     }
 </script>
-
 </body>
 </html>

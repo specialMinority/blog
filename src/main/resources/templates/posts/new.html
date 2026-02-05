@@ -1,33 +1,32 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <title>새 글 작성</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規投稿</title>
+  <link rel="stylesheet" href="/responsive.css?v=5">
   <style>
-    body{font-family:sans-serif;max-width:720px;margin:2rem auto}
+    body{font-family:'Noto Sans JP', sans-serif;max-width:720px;margin:2rem auto;padding:15px}
     label{display:block;margin:.6rem 0 .2rem;font-weight:bold}
-    input,textarea{width:100%;padding:.6rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;}
+    input,textarea{width:100%;padding:.8rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:16px}
     .row{margin-top:1rem;display:flex;gap:.5rem}
-    .btn{padding:.5rem 1rem;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#f6f6f6}
+    .btn{padding:.8rem 1.5rem;border:1px solid #ccc;border-radius:6px;cursor:pointer;background:#f6f6f6;font-size:16px}
+    .btn-primary{background:#007bff;color:white;border:none}
     a{text-decoration:none;color:#0366d6}
   </style>
 </head>
 <body>
-<h1>새 글 작성</h1>
-
-<!-- [요구사항 1] POST /posts 로 폼 데이터 전송 -->
+<h1>新規投稿</h1>
 <form th:action="@{/posts}" method="post" th:object="${post}">
-  <label for="title">제목</label>
+  <label for="title">タイトル</label>
   <input id="title" type="text" th:field="*{title}" required />
 
-  <!-- 작성자는 로그인한 사용자로 자동 설정됩니다 -->
-
-  <label for="content">내용</label>
-  <textarea id="content" rows="8" th:field="*{content}"></textarea>
+  <label for="content">内容</label>
+  <textarea id="content" rows="10" th:field="*{content}"></textarea>
 
   <div class="row">
-    <button class="btn" type="submit">등록</button>
-    <a class="btn" th:href="@{/posts/list}">목록으로</a>
+    <button class="btn btn-primary" type="submit">投稿</button>
+    <a class="btn" th:href="@{/posts/list}" style="display:flex;align-items:center;">一覧へ</a>
   </div>
 </form>
 </body>

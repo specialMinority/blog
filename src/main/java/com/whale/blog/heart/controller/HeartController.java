@@ -29,9 +29,13 @@ public class HeartController {
         // 좋아요 토글 실행(true or false)
         boolean liked = heartService.toggleHeartByLoginId(principal.getName(), postId);
 
+        // 최신 좋아요 개수 조회
+        int likeCount = heartService.countHeart(postId);
+
         // JS에 보낼 JSON 데이터 반환
         Map<String, Object> response = new HashMap<>();
         response.put("liked", liked);
+        response.put("likeCount", likeCount);
 
         return ResponseEntity.ok(response);
     }

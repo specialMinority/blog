@@ -18,4 +18,7 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
 
     // 3. 존재 여부 boolean으로 반환
     boolean existsByMemberAndPost(Member member, Post post);
+
+    // 4. 회원이 누른 좋아요 삭제 (회원 탈퇴 시 사용)
+    void deleteByMember(Member member);
 }

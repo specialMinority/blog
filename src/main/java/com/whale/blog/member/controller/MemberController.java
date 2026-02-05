@@ -41,7 +41,7 @@ public class MemberController {
     public ResponseEntity<String> signup(@RequestBody JoinDto joinDto) {
         try {
             memberService.join(joinDto);
-            return ResponseEntity.ok("가입 성공");
+            return ResponseEntity.ok("会員登録が完了しました。");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -69,7 +69,7 @@ public class MemberController {
 
         // 2. DB 조회
 
-        Member member = memberService.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없음"));
+        Member member = memberService.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("会員情報が見つかりません。"));
 
         model.addAttribute("member", member);
 
@@ -97,7 +97,7 @@ public class MemberController {
     public ResponseEntity<String> updateMember(Principal principal,@RequestBody UpdateDto updateDto) {
         try{
             memberService.updateMember(principal.getName(), updateDto);
-            return ResponseEntity.ok("수정 성공");
+            return ResponseEntity.ok("修正が完了しました。");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -118,9 +118,9 @@ public class MemberController {
             }
 
             SecurityContextHolder.clearContext(); // 시큐리티 인증 정보 삭제
-            return ResponseEntity.ok("탈퇴 성공");
+            return ResponseEntity.ok("退会処理が完了しました。");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("비밀번호가 틀렸읍니다");
+            return ResponseEntity.badRequest().body("パスワードが一致しません。");
         }
     }
 }

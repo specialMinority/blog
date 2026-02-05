@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>마이페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マイページ</title>
+  <link rel="stylesheet" href="/responsive.css?v=5">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
     .profile-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
     .profile-img { width: 100px; height: 100px; background-color: #e2e2e2; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
     h2 { margin: 0 0 10px; color: #333; }
@@ -21,46 +23,39 @@
 <body>
 <div class="profile-card">
   <div class="profile-img">👤</div>
-
-  <h2 th:text="${member.nickname}">사용자이름</h2>
-  <p>환영합니다!</p>
-
+  <h2 th:text="${member.nickname}">ユーザー名</h2>
+  <p>ようこそ！</p>
   <div class="info-box">
     <div class="info-row">
-      <span class="label">아이디</span>
+      <span class="label">ユーザーID</span>
       <span class="value" th:text="${member.loginId}">user_id</span>
     </div>
     <div class="info-row">
-      <span class="label">가입일</span>
+      <span class="label">登録日</span>
       <span class="value" th:text="${#temporals.format(member.createdAt, 'yyyy-MM-dd')}" th:if="${member.createdAt}">2024-01-01</span>
     </div>
   </div>
-
-  <a href="/users/edit" class="btn btn-edit">내 정보 수정</a>
-
-  <form action="/logout" meth od="post" style="margin-top: 10px;">
-    <button type="submit" class="btn btn-home" style="background-color: #dc3545;">로그아웃</button>
+  <a href="/users/edit" class="btn btn-edit">情報編集</a>
+  <form action="/logout" method="post" style="margin-top: 10px;">
+    <button type="submit" class="btn btn-home" style="background-color: #dc3545;">ログアウト</button>
   </form>
-
-  <button onclick="deleteMember()" class="btn" style="background-color: #343a40; color:white; margin-top:10px;">회원 탈퇴</button>
-  <a href="/posts" class="btn btn-home">메인으로</a>
+  <button onclick="deleteMember()" class="btn" style="background-color: #343a40; color:white; margin-top:10px;">退会</button>
+  <a href="/posts" class="btn btn-home">メインへ</a>
 </div>
-
 <script>
   function deleteMember() {
-    const password = prompt("탈퇴를 위해 비밀번호를 입력해주세요.");
+    const password = prompt("退会のためにパスワードを入力してください。");
     if (!password) return;
-
     fetch('/users/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: password })
     }).then(async res => {
       if (res.ok) {
-        alert("탈퇴되었습니다.");
+        alert("退会されました。");
         location.href = "/";
       } else {
-        alert("탈퇴 실패: " + await res.text());
+        alert("退会失敗: " + await res.text());
       }
     });
   }

@@ -1,185 +1,80 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>게시글 목록</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿一覧</title>
+    <link rel="stylesheet" href="/responsive.css?v=7">
     <style>
-        body {
-            font-family: sans-serif;
-            max-width: 720px;
-            margin: 2rem auto
-        }
-
-        a {
-            color: #0366d6;
-            text-decoration: none
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse
-        }
-
-        th, td {
-            border-bottom: 1px solid #ddd;
-            padding: .6rem;
-            text-align: left
-        }
-
-        /* 가운데 정렬용 클래스 */
-        .text-center {
-            text-align: center;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: .4rem .8rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #f6f6f6;
-            font-size: 14px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        /* 링크 스타일 초기화 */
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-            gap: 5px;
-        }
-
-        .page-btn {
-            display: inline-block;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #fff;
-            color: #333;
-            transition: background 0.2s;
-        }
-
-        .page-btn:hover {
-            background-color: #f1f1f1;
-        }
-
-        /* 현재 페이지 활성화 스타일 */
-        .page-btn.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        /* 비활성화(이전/다음 없을 때) */
-        .page-btn.disabled {
-            color: #ccc;
-            pointer-events: none; /* 클릭 방지 */
-            border-color: #eee;
-        }
+        /* 추가적인 인라인 스타일이 필요 없을 정도로 responsive.css에 통합됨 */
     </style>
 </head>
 <body>
-<div style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
-    <form th:action="@{/posts/list}" method="get" style="display: flex; gap: 5px;">
-        <select name="searchType" style="padding: .4rem; border-radius: 6px; border: 1px solid #ccc;">
-            <option value="title" th:selected="${param.searchType == null || param.searchType[0] == 'title'}">제목</option>
-            <option value="content" th:selected="${param.searchType != null && param.searchType[0] == 'content'}">내용</option>
-            <option value="author" th:selected="${param.searchType != null && param.searchType[0] == 'author'}">작성자</option>
-            <option value="comment" th:selected="${param.searchType != null && param.searchType[0] == 'comment'}">댓글 내용</option>
-        </select>
-
-        <input type="hidden" name="sort" th:value="${param.sort != null ? param.sort[0] : 'likeCount,desc'}">
-        <input type="text" name="searchText" th:value="${param.searchText != null ? param.searchText[0] : ''}" placeholder="검색어를 입력하세요"
-               style="padding: .4rem; border-radius: 6px; border: 1px solid #ccc; width: 200px;">
-        <button type="submit" class="btn btn-primary">검색</button>
-    </form>
-</div>
-
-<div class="topbar">
-    <h1>게시글 목록</h1>
-
-    <div class="btn-group">
-        <!-- 최신순/오래된순 토글 -->
-        <a class="btn"
-           th:href="@{/posts/list(sort=${param.sort != null && param.sort[0] == 'id,asc' ? 'id,desc' : 'id,asc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
-           th:classappend="${param.sort != null && (param.sort[0] == 'id,asc' || param.sort[0] == 'id,desc')} ? 'btn-primary' : ''"
-           th:text="${param.sort != null && param.sort[0] == 'id,asc' ? '▲ 오래된순' : '▼ 최신순'}">
-        </a>
-
-        <!-- 인기순 토글 -->
-        <a class="btn"
-           th:href="@{/posts/list(sort=${param.sort != null && param.sort[0] == 'likeCount,desc' ? 'likeCount,asc' : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
-           th:classappend="${param.sort == null || (param.sort != null && (param.sort[0] == 'likeCount,desc' || param.sort[0] == 'likeCount,asc'))} ? 'btn-primary' : ''"
-           th:text="${param.sort != null && param.sort[0] == 'likeCount,asc' ? '▲ 인기순' : '▼ 인기순'}">
-        </a>
-
-        <a class="btn" th:href="@{/users/my}" style="background-color: #fff; border-color: #28a745; color: #28a745;">My Page</a>
-        <a class="btn btn-primary" th:href="@{/posts/new}">새 글 작성</a>
+<div class="container" style="margin: 3rem auto;">
+    
+    <!-- 검색 폼 -->
+    <div style="margin-bottom: 2rem; display: flex; justify-content: flex-end;" class="search-wrapper">
+        <form th:action="@{/posts/list}" method="get" style="display: flex; gap: 8px; width: 100%; justify-content: flex-end;">
+            <select name="searchType" style="width: auto; min-width: 100px;">
+                <option value="title" th:selected="${param.searchType == null || param.searchType[0] == 'title'}">タイトル</option>
+                <option value="content" th:selected="${param.searchType != null && param.searchType[0] == 'content'}">内容</option>
+                <option value="author" th:selected="${param.searchType != null && param.searchType[0] == 'author'}">投稿者</option>
+                <option value="comment" th:selected="${param.searchType != null && param.searchType[0] == 'comment'}">コメント内容</option>
+            </select>
+            <input type="hidden" name="sort" th:value="${param.sort != null ? param.sort[0] : 'likeCount,desc'}">
+            <input type="text" name="searchText" th:value="${param.searchText != null ? param.searchText[0] : ''}" placeholder="検索..." style="width: 250px;">
+            <button type="submit" class="btn btn-primary" style="min-width: 60px;"><i class="fa-solid fa-magnifying-glass"></i> 검색</button>
+        </form>
     </div>
-</div>
 
-<table>
-    <thead>
-    <tr>
-        <th style="width: 10%">ID</th>
-        <th>제목</th>
-        <th style="width: 20%">작성자</th>
-        <th style="width: 15%" class="text-center">좋아요</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="p : ${posts}">
-        <td th:text="${p.id}">1</td>
-        <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">제목</a></td>
-        <td th:text="${p.author}">작성자</td>
-        <td class="text-center" th:text="${p.likeCount}">0</td>
-    </tr>
-    <tr th:if="${posts.totalElements == 0}">
-        <td colspan="4" class="text-center">게시글이 없습니다.</td>
-    </tr>
-    </tbody>
-</table>
+    <!-- 상단 바 (제목 + 정렬/버튼) -->
+    <div class="topbar">
+        <h1>投稿一覧</h1>
+        <div class="btn-group" style="display: flex; gap: 8px;">
+            <a class="btn" th:href="@{/posts/list(sort=${param.sort != null && param.sort[0] == 'id,asc' ? 'id,desc' : 'id,asc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
+               th:classappend="${param.sort != null && (param.sort[0] == 'id,asc' || param.sort[0] == 'id,desc')} ? 'btn-primary' : ''"
+               th:text="${param.sort != null && param.sort[0] == 'id,asc' ? '▲ 古い順' : '▼ 新しい順'}"></a>
+            <a class="btn" th:href="@{/posts/list(sort=${param.sort != null && param.sort[0] == 'likeCount,desc' ? 'likeCount,asc' : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
+               th:classappend="${param.sort == null || (param.sort != null && (param.sort[0] == 'likeCount,desc' || param.sort[0] == 'likeCount,asc'))} ? 'btn-primary' : ''"
+               th:text="${param.sort != null && param.sort[0] == 'likeCount,asc' ? '▲ 人気順' : '▼ 人気順'}"></a>
+            <a class="btn" th:href="@{/users/my}" style="background-color: white; border-color: #28a745; color: #28a745;">マイページ</a>
+            <a class="btn btn-primary" th:href="@{/posts/new}" style="background-color: #0d6efd; border-color: #0d6efd; color: white;">新規投稿</a>
+        </div>
+    </div>
 
-<div class="pagination" th:if="${posts.totalPages > 0}">
-    <a class="page-btn"
-       th:href="@{/posts/list(page=${posts.number - 1}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
-       th:classappend="${posts.first} ? 'disabled'">이전</a>
+    <!-- 테이블 컨테이너 (둥근 테두리 적용) -->
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>タイトル</th>
+                <th>投稿者</th>
+                <th class="text-center">いいね</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${posts}">
+                <td th:text="${p.id}">1</td>
+                <td><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">タイトル</a></td>
+                <td th:text="${p.author}">投稿者</td>
+                <td class="text-center" th:text="${p.likeCount}">0</td>
+            </tr>
+            <tr th:if="${posts.totalElements == 0}">
+                <td colspan="4" class="text-center" style="padding: 3rem; color: #999;">投稿がありません。</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <th:block th:each="page : ${#numbers.sequence(0, posts.totalPages - 1)}">
-        <a class="page-btn"
-           th:href="@{/posts/list(page=${page}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
-           th:text="${page + 1}"
-           th:classappend="${page == posts.number} ? 'active'">1</a>
-    </th:block>
-
-    <a class="page-btn"
-       th:href="@{/posts/list(page=${posts.number + 1}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}"
-       th:classappend="${posts.last} ? 'disabled'">다음</a>
+    <!-- 페이지네이션 -->
+    <div class="pagination" th:if="${posts.totalPages > 0}">
+        <a class="page-btn" th:href="@{/posts/list(page=${posts.number - 1}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}" th:classappend="${posts.first} ? 'disabled'">‹</a>
+        <th:block th:each="page : ${#numbers.sequence(0, posts.totalPages - 1)}">
+            <a class="page-btn" th:href="@{/posts/list(page=${page}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}" th:text="${page + 1}" th:classappend="${page == posts.number} ? 'active'">1</a>
+        </th:block>
+        <a class="page-btn" th:href="@{/posts/list(page=${posts.number + 1}, sort=${param.sort != null ? param.sort[0] : 'likeCount,desc'}, searchText=${param.searchText != null ? param.searchText[0] : ''}, searchType=${param.searchType != null ? param.searchType[0] : 'title'})}" th:classappend="${posts.last} ? 'disabled'">›</a>
+    </div>
 </div>
 </body>
 </html>

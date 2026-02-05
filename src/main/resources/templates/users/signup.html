@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+    <link rel="stylesheet" href="/responsive.css?v=5">
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f6f9; }
+        body { font-family: 'Noto Sans JP', sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f6f9; }
         .signup-box { background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
@@ -12,36 +14,29 @@
 </head>
 <body>
 <div class="signup-box">
-    <h2 style="text-align: center;">회원가입</h2>
-    <input type="email" id="email" placeholder="이메일 (아이디)">
-    <input type="password" id="password" placeholder="비밀번호">
-    <input type="text" id="name" placeholder="이름">
-    <button onclick="signup()">가입하기</button>
+    <h2 style="text-align: center;">新規登録</h2>
+    <input type="email" id="email" placeholder="メール（ユーザーID）">
+    <input type="password" id="password" placeholder="パスワード">
+    <input type="text" id="name" placeholder="名前">
+    <button onclick="signup()">登録する</button>
 </div>
-
 <script>
     function signup() {
         const data = {
             loginId: document.getElementById("email").value,
-
             password: document.getElementById("password").value,
-
             nickname: document.getElementById("name").value
         };
-
-        // (디버깅용)
-        console.log("서버로 보내는 데이터:", data);
-
         fetch('/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }).then(async res => {
             if (res.ok) {
-                alert("가입 성공! 로그인해주세요.");
+                alert("登録成功！ログインしてください。");
                 location.href = "/posts/main";
             } else {
-                alert("가입 실패: " + await res.text());
+                alert("登録失敗: " + await res.text());
             }
         });
     }

@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원정보 수정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会員情報編集</title>
+    <link rel="stylesheet" href="/responsive.css?v=5">
     <style>
-        /* 간단한 스타일 */
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f6f9; }
+        body { font-family: 'Noto Sans JP', sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f4f6f9; }
         .edit-container { background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
@@ -23,35 +15,30 @@
 </head>
 <body>
 <div class="edit-container">
-    <h2 style="text-align: center;">정보 수정</h2>
-
-    <label>이름</label>
-    <input type="text" id="name" th:value="${member.nickname}" placeholder="변경할 이름">
-
-    <label>새 비밀번호</label>
-    <input type="password" id="password" placeholder="변경할 비밀번호 (선택)">
-
-    <button onclick="updateMember()">수정 완료</button>
-    <a href="/users/my" style="display:block; text-align:center; margin-top:15px; text-decoration:none; color:#666;">취소하고 돌아가기</a>
+    <h2 style="text-align: center;">情報編集</h2>
+    <label>名前</label>
+    <input type="text" id="name" th:value="${member.nickname}" placeholder="変更する名前">
+    <label>新しいパスワード</label>
+    <input type="password" id="password" placeholder="変更するパスワード (任意)">
+    <button onclick="updateMember()">編集完了</button>
+    <a href="/users/my" style="display:block; text-align:center; margin-top:15px; text-decoration:none; color:#666;">キャンセルして戻る</a>
 </div>
-
 <script>
     function updateMember() {
         const data = {
             nickname: document.getElementById("name").value,
             password: document.getElementById("password").value
         };
-
         fetch('/users/edit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }).then(async res => {
             if (res.ok) {
-                alert("수정되었습니다.");
+                alert("編集されました。");
                 location.href = "/users/my";
             } else {
-                alert("수정 실패: " + await res.text());
+                alert("編集失敗: " + await res.text());
             }
         });
     }

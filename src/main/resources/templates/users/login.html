@@ -1,74 +1,56 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+﻿<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/responsive.css?v=5">
     <style>
-        .login-container {
-            max-width: 400px;
-            margin-top: 100px;
-        }
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .login-container { max-width: 400px; margin-top: 100px; }
     </style>
 </head>
 <body class="bg-light">
-
 <div class="container d-flex justify-content-center">
     <div class="login-container w-100">
         <div class="card shadow-sm">
             <div class="card-header bg-white text-center">
-                <h4>로그인</h4>
+                <h4>ログイン</h4>
             </div>
             <div class="card-body">
-
                 <div th:if="${param.error}" class="alert alert-danger text-center">
-                    아이디 또는 비밀번호를 확인해주세요.
+                    ユーザーIDまたはパスワードを確認してください。
                 </div>
-
                 <div th:if="${param.logout}" class="alert alert-success text-center">
-                    로그아웃 되었습니다.
+                    ログアウトされました。
                 </div>
-
                 <form th:action="@{/login}" method="post">
-
                     <div class="mb-3">
-                        <label for="loginId" class="form-label">아이디</label>
-                        <input type="text" class="form-control" id="loginId" name="username"
-                               placeholder="아이디를 입력하세요" required autofocus>
+                        <label for="loginId" class="form-label">ユーザーID</label>
+                        <input type="text" class="form-control" id="loginId" name="username" placeholder="ユーザーIDを入力" required autofocus>
                     </div>
-
                     <div class="mb-3">
-                        <label for="password" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                               placeholder="비밀번호를 입력하세요" required>
+                        <label for="password" class="form-label">パスワード</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="パスワードを入力" required>
                     </div>
-
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">로그인</button>
+                        <button type="submit" class="btn btn-primary">ログイン</button>
                     </div>
                 </form>
-
                 <hr>
                 <div class="text-center">
-                    <a href="/users/signup" class="text-decoration-none">회원가입 하러가기</a>
+                    <a href="/users/signup" class="text-decoration-none">新規登録はこちら</a>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 <script th:inline="javascript">
-    /* <![CDATA[ */
-    // 1. 타임리프가 값을 넣어줍니다.
-    // 파라미터가 있으면 ["true"] 배열이 되고, 없으면 null이 됩니다.
     var needLogin = [[${param.needLogin}]];
-
-    // 2. 값이 존재할 때(null이 아닐 때)만 알림창을 띄웁니다.
     if (needLogin != null) {
-        alert("로그인이 필요한 서비스입니다.\n먼저 로그인 해주세요! 🙏");
+        alert("ログインが必要なサービスです。\nまずログインしてください！ 🙏");
     }
-    /* ]]> */
 </script>
-
 </body>
 </html>

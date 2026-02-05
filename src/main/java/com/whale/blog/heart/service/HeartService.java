@@ -25,10 +25,10 @@ public class HeartService {
     @Transactional
     public boolean toggleHeartByLoginId(String loginId, Long postId) {
         // 1. 로그인 아이디로 회원 조회
-        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("회원 정보가 없음"));
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalArgumentException("会員情報がありません。"));
 
         // 2. 게시글 조회
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않음"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("投稿が存在しません。"));
 
         // 3. 이미 좋아요 눌렀는지 확인
         Optional<Heart> heartOpt = heartRepository.findByMemberAndPost(member, post);
@@ -45,10 +45,16 @@ public class HeartService {
     @Transactional(readOnly = true)
     public boolean isLiked(String loginId, Long postId) {
         Member member = memberRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 정보가 없음"));
+                .orElseThrow(() -> new IllegalArgumentException("会員情報がありません。"));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않음"));
+                .orElseThrow(() -> new IllegalArgumentException("投稿が存在しません。"));
 
         return heartRepository.existsByMemberAndPost(member, post);
+    }
+
+    @Transactional(readOnly = true)
+    public int countHeart(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않음"));
+        return heartRepository.countByPost(post);
     }
 }
