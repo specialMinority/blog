@@ -32,37 +32,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-bloguser}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-blogpassword}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - blog-network
-    restart: unless-stopped
-
-  # ==========================================
-  # MySQL 데이터베이스
-  # ==========================================
-  db:
-    image: mysql:8.0
-    container_name: blog-mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-rootpassword}
-      - MYSQL_DATABASE=blog
-      - MYSQL_USER=${DB_USERNAME:-bloguser}
-      - MYSQL_PASSWORD=${DB_PASSWORD:-blogpassword}
-    volumes:
-      # 데이터 영구 저장 (컨테이너 삭제해도 데이터 유지)
-      - mysql-data:/var/lib/mysql
-      # 초기 스키마 실행
-      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
-    ports:
-      - "3307:3306"  # 로컬 포트를 3307로 변경 (로컬 MySQL과 충돌 방지)
-    healthcheck:
-      # DB가 준비될 때까지 대기
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - blog-network
     restart: unless-stopped
@@ -74,8 +43,4 @@ networks:
   blog-network:
     driver: bridge
 
-# ==========================================
-# 볼륨 정의 (데이터 영구 저장)
-# ==========================================
-volumes:
-  mysql-data:
+
