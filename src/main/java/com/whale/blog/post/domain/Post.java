@@ -22,6 +22,8 @@ public class Post {
 
     private String author;
 
+    private String authorId;
+
     @Formula("(SELECT count(1) FROM heart h WHERE h.post_id = id)")
     private int likeCount;
 
@@ -47,6 +49,9 @@ public class Post {
 
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+
+    public String getAuthorId() { return authorId; }
+    public void setAuthorId(String authorId) { this.authorId = authorId; }
 
     public int getLikeCount() {
         return likeCount;

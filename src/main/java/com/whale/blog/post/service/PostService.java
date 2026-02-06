@@ -37,6 +37,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다"));
         
         post.setAuthor(member.getNickname());
+        post.setAuthorId(currentUserLoginId);
         return postRepository.save(post);
     }
 

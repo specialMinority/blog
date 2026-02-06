@@ -140,7 +140,11 @@ public class PostController {
         if (principal != null) {
             String loginId = principal.getName();
             isLiked = heartService.isLiked(loginId, id);
-            isAuthor = post.getAuthor() != null && post.getAuthor().equals(loginId);
+            if (post.getAuthorId() != null) {
+                isAuthor = post.getAuthorId().equals(loginId);
+            } else {
+                isAuthor = post.getAuthor() != null && post.getAuthor().equals(loginId);
+            }
             
             // 현재 사용자의 nickname 조회
             memberRepository.findByLoginId(loginId).ifPresent(member -> {
@@ -165,8 +169,15 @@ public class PostController {
         Post post = postService.findById(id);
         
         // 작성자 검증
-        if (principal == null || !post.getAuthor().equals(principal.getName())) {
-            throw new IllegalArgumentException("修正権限がありません。");
+        boolean isOwner = false;
+        if (post.getAuthorId() != null) {
+            isOwner = post.getAuthorId().equals(principal.getName());
+        } else {
+            isOwner = post.getAuthor().equals(principal.getName());
+        }
+
+        if (principal == null || !isOwner) {
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
 
         model.addAttribute("post", post);
@@ -179,8 +190,15 @@ public class PostController {
         Post originalPost = postService.findById(id);
 
         // 작성자 검증
-        if (principal == null || !originalPost.getAuthor().equals(principal.getName())) {
-            throw new IllegalArgumentException("修正権限がありません。");
+        boolean isOwner = false;
+        if (originalPost.getAuthorId() != null) {
+            isOwner = originalPost.getAuthorId().equals(principal.getName());
+        } else {
+            isOwner = originalPost.getAuthor().equals(principal.getName());
+        }
+
+        if (principal == null || !isOwner) {
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
 
         postService.update(id, post);
@@ -193,8 +211,15 @@ public class PostController {
         Post post = postService.findById(id);
 
         // 작성자 검증
-        if (principal == null || !post.getAuthor().equals(principal.getName())) {
-            throw new IllegalArgumentException("削除権限がありません。");
+        boolean isOwner = false;
+        if (post.getAuthorId() != null) {
+            isOwner = post.getAuthorId().equals(principal.getName());
+        } else {
+            isOwner = post.getAuthor().equals(principal.getName());
+        }
+
+        if (principal == null || !isOwner) {
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
         }
 
         postService.delete(id);
