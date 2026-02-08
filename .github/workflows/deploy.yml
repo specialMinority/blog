@@ -55,7 +55,8 @@ jobs:
           cd /home/ec2-user/apps/blog
           git pull origin main
           docker-compose down
-          docker-compose up -d --build
+          docker-compose build --no-cache
+          docker-compose up -d
         EOF
         
         # 임시 키 파일 삭제
