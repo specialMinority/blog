@@ -53,7 +53,8 @@ jobs:
         # EC2에 SSH 접속하여 배포 스크립트 실행
         ssh -o StrictHostKeyChecking=no -i private_key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
           cd /home/ec2-user/apps/blog
-          git pull origin main
+          git fetch origin main
+          git reset --hard origin/main
           docker-compose down
           docker-compose build --no-cache
           docker-compose up -d
