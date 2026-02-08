@@ -22,7 +22,7 @@ body {
     min-height: 100vh;
     padding-bottom: 25vw;
     box-sizing: border-box;
-    background: #ffffff url('/images/footer_bg.png') no-repeat center bottom;
+    background: #ffffff url('/images/blog_bg.png') no-repeat center bottom;
     background-size: 70% auto;
 }
 
@@ -367,7 +367,8 @@ td a:hover {
 
 /* 히어로 섹션 */
 .hero-section {
-    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    background: url('/images/blog_bg.png') no-repeat center center;
+    background-size: cover;
     color: white;
     padding: 5rem 1rem;
     border-radius: 0 0 40px 40px;
