@@ -367,8 +367,7 @@ td a:hover {
 
 /* 히어로 섹션 */
 .hero-section {
-    background: url('/images/blog_bg.png') no-repeat center center;
-    background-size: cover;
+    background: linear-gradient(120deg, rgba(137, 247, 254, 0.75) 0%, rgba(102, 166, 255, 0.75) 100%);
     color: white;
     padding: 5rem 1rem;
     border-radius: 0 0 40px 40px;
